@@ -9,7 +9,7 @@ solution <- calib_results@solution[1, ]
 names(solution) <- NULL
 
 r_2_r_baseline_params <- list(
-  spawn_decay_multiplier = DSMhabitat::spawning_decay_multiplier,
+  spawn_decay_multiplier = DSMhabitat::spawning_decay_multiplier$biop_itp_2018_2019$wr,
   # Data from DSMscenarios
   spawn_decay_rate = DSMscenario::spawn_decay_rate,
   rear_decay_rate = DSMscenario::rear_decay_rate,
