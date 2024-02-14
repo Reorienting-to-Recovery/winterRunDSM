@@ -304,6 +304,10 @@ winter_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "cali
     growth_temps <- ..params$avg_temp
     growth_temps[which(growth_temps > 28)] <- 28
     
+    
+    growth_temps <- ..params$avg_temp
+    growth_temps[which(growth_temps > 28)] <- 28
+    
     for (month in c(9:12, 1:5)) {
       if (month %in% 1:5) juv_dynamics_year <- year + 1 else juv_dynamics_year <- year
       
