@@ -299,12 +299,6 @@ winter_run_model <- function(scenario = NULL, mode = c("seed", "simulate", "cali
     d$year <- year
     output$juveniles <- dplyr::bind_rows(output$juveniles, d)
     # end R2R metric -----------------------------------------------------------
-    
-    
-    growth_temps <- ..params$avg_temp
-    growth_temps[which(growth_temps > 28)] <- 28
-    
-    
     growth_temps <- ..params$avg_temp
     growth_temps[which(growth_temps > 28)] <- 28
     

@@ -9,14 +9,21 @@ solution <- calib_results@solution[1, ]
 names(solution) <- NULL
 
 r_2_r_baseline_params <- list(
+<<<<<<< HEAD
   spawn_decay_multiplier = DSMhabitat::spawning_decay_multiplier$biop_itp_2018_2019$wr,
+=======
+  spawn_decay_multiplier = DSMhabitat::spawning_decay_multiplier,
+>>>>>>> 96d18c8 (inits integration of r2r logic)
   # Data from DSMscenarios
   spawn_decay_rate = DSMscenario::spawn_decay_rate,
   rear_decay_rate = DSMscenario::rear_decay_rate,
   
+<<<<<<< HEAD
   prey_density = winterRunDSM::prey_density,
   prey_density_delta = winterRunDSM::prey_density_delta,
   
+=======
+>>>>>>> 96d18c8 (inits integration of r2r logic)
   # Data from winterRunDSM cache-data (values vary by run)
   hatchery_allocation = winterRunDSM::hatchery_allocation,
   natural_adult_removal_rate = winterRunDSM::natural_adult_removal_rate,
