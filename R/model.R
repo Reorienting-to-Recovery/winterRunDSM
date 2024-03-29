@@ -38,11 +38,13 @@ winter_run_model <- function(scenario = NULL,
       weeks_flooded = ..params$weeks_flooded
     )
     
+    # Apply spawn decay multiplier
     scenario_data <- DSMscenario::load_scenario(scenario,
                                                 habitat_inputs = habitats,
-                                                species = DSMscenario::species$WINTER_RUN,
+                                                species = DSMscenario::species$SPRING_RUN,
                                                 spawn_decay_rate = ..params$spawn_decay_rate,
                                                 rear_decay_rate = ..params$rear_decay_rate,
+                                                spawn_decay_multiplier = ..params$spawn_decay_multiplier,
                                                 stochastic = stochastic)
     
     ..params$spawning_habitat <- scenario_data$spawning_habitat
@@ -51,7 +53,11 @@ winter_run_model <- function(scenario = NULL,
     ..params$floodplain_habitat <- scenario_data$floodplain_habitat
     ..params$weeks_flooded <- scenario_data$weeks_flooded
     
-    
+    ..params$spawning_habitat <- scenario_data$spawning_habitat
+    ..params$inchannel_habitat_fry <- scenario_data$inchannel_habitat_fry
+    ..params$inchannel_habitat_juvenile <- scenario_data$inchannel_habitat_juvenile
+    ..params$floodplain_habitat <- scenario_data$floodplain_habitat
+    ..params$weeks_flooded <- scenario_data$weeks_flooded
   }
   
   if (mode == "calibrate") {
@@ -69,16 +75,17 @@ winter_run_model <- function(scenario = NULL,
     # SIT METRICS
     spawners = matrix(0, nrow = 31, ncol = 20, dimnames = list(winterRunDSM::watershed_labels, 1:20)),
     juvenile_biomass = matrix(0, nrow = 31, ncol = 20, dimnames = list(winterRunDSM::watershed_labels, 1:20)),
-    returning_adults = tibble::tibble(),
+    # proportion_natural = matrix(NA_real_, nrow = 31, ncol = 20, dimnames = list(winterRunDSM::watershed_labels, 1:20))
     north_delta_fish = data.frame(),
     
     # R2R METRICS
-    adults_in_ocean = matrix(0, nrow = 31, ncol = 20, dimnames = list(fallRunDSM::watershed_labels, 1:20)),
+    returning_adults = tibble::tibble(),
+    adults_in_ocean = matrix(0, nrow = 31, ncol = 20, dimnames = list(winterRunDSM::watershed_labels, 1:20)),
     juveniles = data.frame(),
     juveniles_at_chipps = data.frame(),
-    proportion_natural_at_spawning = matrix(0, nrow = 31, ncol = 20, dimnames = list(fallRunDSM::watershed_labels, 1:20)),
-    proportion_natural_juves_in_tribs = matrix(0, nrow = 31, ncol = 20, dimnames = list(fallRunDSM::watershed_labels, 1:20)),
-    phos = matrix(0, nrow = 31, ncol = 20, dimnames = list(fallRunDSM::watershed_labels, 1:20)),
+    proportion_natural_at_spawning = matrix(0, nrow = 31, ncol = 20, dimnames = list(winterRunDSM::watershed_labels, 1:20)),
+    proportion_natural_juves_in_tribs = matrix(0, nrow = 31, ncol = 20, dimnames = list(winterRunDSM::watershed_labels, 1:20)),
+    phos = matrix(0, nrow = 31, ncol = 20, dimnames = list(winterRunDSM::watershed_labels, 1:20)),
     harvested_adults = data.frame()
   )
   
@@ -86,38 +93,38 @@ winter_run_model <- function(scenario = NULL,
     calculated_adults <- matrix(0, nrow = 31, ncol = 30)
   }
   
-  adults <- switch (mode,
-                    "seed" = seeds,
-                    "simulate" = seeds$adults,
-                    "calibrate" = seeds,
+  adults <- switch(mode,
+                   "seed" = winterRunDSM::adult_seeds,
+                   "simulate" = seeds$adults,
+                   "calibrate" = seeds,
   )
   
+  # TODO do we want the yearling logic from springRunDSM?
+
   for (year in 1:simulation_length) {
+    # TODO added this list from springRunDSM - keep?
     adults_in_ocean <- numeric(31)
-    
-    # initialize 31 x 4 matrices for natal fish, migrants, and ocean fish
     lower_mid_sac_fish <- matrix(0, nrow = 20, ncol = 4, dimnames = list(winterRunDSM::watershed_labels[1:20], winterRunDSM::size_class_labels))
     lower_sac_fish <- matrix(0, nrow = 27, ncol = 4, dimnames = list(winterRunDSM::watershed_labels[1:27], winterRunDSM::size_class_labels))
     upper_mid_sac_fish <- matrix(0, nrow = 15, ncol = 4, dimnames = list(winterRunDSM::watershed_labels[1:15], winterRunDSM::size_class_labels))
     sutter_fish <- matrix(0, nrow = 15, ncol = 4, dimnames = list(winterRunDSM::watershed_labels[1:15], winterRunDSM::size_class_labels))
     yolo_fish <- matrix(0, nrow = 20, ncol = 4, dimnames = list(winterRunDSM::watershed_labels[1:20], winterRunDSM::size_class_labels))
-    san_joaquin_fish <- matrix(0, nrow = 3, ncol = 4, dimnames = list(winterRunDSM::watershed_labels[28:30], winterRunDSM::size_class_labels))
+    san_joaquin_fish <- matrix(0, nrow = 4, ncol = 4, dimnames = list(winterRunDSM::watershed_labels[28:31], winterRunDSM::size_class_labels))
     north_delta_fish <- matrix(0, nrow = 23, ncol = 4, dimnames = list(winterRunDSM::watershed_labels[1:23], winterRunDSM::size_class_labels))
     south_delta_fish <- matrix(0, nrow = 31, ncol = 4, dimnames = list(winterRunDSM::watershed_labels, winterRunDSM::size_class_labels))
     juveniles_at_chipps <- matrix(0, nrow = 31, ncol = 4, dimnames = list(winterRunDSM::watershed_labels, winterRunDSM::size_class_labels))
     natural_adults <- round(adults * (1 - ..params$proportion_hatchery))
     
-    
     avg_ocean_transition_month <- ocean_transition_month(stochastic = stochastic) # 2
     
     # R2R logic updates #
     # R2R logic to add fish size as an input -----------------------------------
-    default_hatch_age_dist <- tibble::tibble(watershed = fallRunDSM::watershed_labels,
+    default_hatch_age_dist <- tibble::tibble(watershed = winterRunDSM::watershed_labels,
                                              prop_2 = rep(.3, 31),
                                              prop_3 = rep(.6, 31),
                                              prop_4 = rep(.1, 31),
                                              prop_5 = rep(0, 31))
-    default_nat_age_dist <- tibble::tibble(watershed = fallRunDSM::watershed_labels,
+    default_nat_age_dist <- tibble::tibble(watershed = winterRunDSM::watershed_labels,
                                            prop_2 = rep(.22, 31),
                                            prop_3 = rep(.47, 31),
                                            prop_4 = rep(.26, 31),
@@ -169,59 +176,33 @@ winter_run_model <- function(scenario = NULL,
         annual_adults * (1 - natural_adult_removal_rate)
       }
       spawners = list(init_adults = round(annual_adults_hatch_removed),
-                      proportion_natural = 1 - fallRunDSM::params$proportion_hatchery)
+                      proportion_natural = 1 - winterRunDSM::params$proportion_hatchery)
     }
     
-    # Harvest
-    if (year <= 5 & mode == "simulate") {
-      hatch_adults <- adults[, year] * seeds$proportion_hatchery
-      # Default to base harvest levels .57 most tribs
-      adults_after_harvest <- hatch_adults * (1 - (..params$ocean_harvest_percentage + ..params$tributary_harvest_percentage))
+    if(mode == "simulate") {
+      # TODO brought in harvest logic from springRunDSM - ok?
+      # HARVEST ----------------------------------------------------------------
+      # Incidental harvest percentage 
+      hatch_adults <- adults[, year] * seeds$proportion_hatchery 
+      adults_after_harvest <- hatch_adults * (1 - .1) # assume 10% hooking mortality 
       hatch_after_harvest_by_age <- round(unname(adults_after_harvest) * as.matrix(default_hatch_age_dist[2:5]))
-      row.names(hatch_after_harvest_by_age) = fallRunDSM::watershed_labels
+      row.names(hatch_after_harvest_by_age) = winterRunDSM::watershed_labels
       colnames(hatch_after_harvest_by_age) = c(2, 3, 4, 5)
       harvested_hatchery_adults <- hatch_adults - adults_after_harvest
-      # NATURAL
-      if (..params$restrict_harvest_to_hatchery_ocean) {
-        nat_adults <- adults[, year] * (1 - seeds$proportion_hatchery) * (.1 - ..params$tributary_harvest_percentage) * .9 # hooking mortality
-        natutal_adults_by_age <- round(unname(natural_adults[, year] ) * as.matrix(default_nat_age_dist[2:5]))
-        harvested_natural_adults = rep(0, 31)
-      }
-      if (..params$restrict_harvest_to_hatchery_ocean & ..params$restrict_harvest_to_hatchery_trib) {
-        nat_adults <- adults[, year] * (1 - seeds$proportion_hatchery)  * .9 # hooking mortality
-        natutal_adults_by_age <- round(unname(natural_adults[, year] ) * as.matrix(default_nat_age_dist[2:5]))
-        harvested_natural_adults = rep(0, 31)}
-      else {
-        nat_adults <- adults[, year] * (1 - seeds$proportion_hatchery)
-        natutal_adults_after_harvest <- nat_adults * (1 - (..params$ocean_harvest_percentage + ..params$tributary_harvest_percentage))
-        natutal_adults_by_age <- round(unname(natutal_adults_after_harvest) * as.matrix(default_nat_age_dist[2:5]))
-        harvested_natural_adults <- nat_adults - natutal_adults_after_harvest
-      }
-      row.names(natutal_adults_by_age) = fallRunDSM::watershed_labels
-      colnames(natutal_adults_by_age) = c(2, 3, 4, 5)
+      
+      # Incidental harvest percentage 
+      nat_adults <- adults[, year] * (1 - seeds$proportion_hatchery)
+      natural_adults_after_harvest <- nat_adults * (1 - .1) # assume 10% hooking mortality 
+      natural_adults_by_age <- round(unname(natural_adults_after_harvest) * as.matrix(default_nat_age_dist[2:5]))
+      harvested_natural_adults <- nat_adults - natural_adults_after_harvest
+      row.names(natural_adults_by_age) = winterRunDSM::watershed_labels
+      colnames(natural_adults_by_age) = c(2, 3, 4, 5)
+      
       adults_after_harvest <- list(hatchery_adults = hatch_after_harvest_by_age,
-                                   natural_adults = natutal_adults_by_age,
+                                   natural_adults = natural_adults_by_age,
                                    harvested_hatchery_adults = harvested_hatchery_adults,
                                    harvested_natural_adults = harvested_natural_adults)
-    }
-    if (year > 5 & mode == "simulate") {
-      adults_after_harvest <- harvest_adults(output$returning_adults,
-                                             output$spawners, year,
-                                             ..params$spawning_habitat,
-                                             terminal_hatchery_logic = ..params$terminal_hatchery_logic,
-                                             ocean_harvest_percentage = ..params$ocean_harvest_percentage,
-                                             tributary_harvest_percentage = ..params$tributary_harvest_percentage,
-                                             restrict_harvest_to_hatchery_ocean  = ..params$restrict_harvest_to_hatchery_ocean,
-                                             restrict_harvest_to_hatchery_trib  = ..params$restrict_harvest_to_hatchery_trib,
-                                             no_cohort_harvest_years = ..params$no_cohort_harvest_years,
-                                             intelligent_crr_harvest = ..params$intelligent_crr_harvest,
-                                             intelligent_habitat_harvest = ..params$intelligent_habitat_harvest,
-                                             crr_scaling = ..params$crr_scaling
-                                             
-      )
       
-    }
-    if (mode == "simulate") {
       natural_adult_harvest <- sum(adults_after_harvest$harvested_natural_adults, na.rm = TRUE)
       hatchery_adult_harvest <- sum(adults_after_harvest$harvested_hatchery_adults, na.rm = TRUE)
       harvest <- tibble::tibble(year = year,
@@ -229,20 +210,17 @@ winter_run_model <- function(scenario = NULL,
                                 natural_harvest = natural_adult_harvest,
                                 total_harvest = hatchery_harvest + natural_harvest)
       output$harvested_adults <- dplyr::bind_rows(output$harvested_adults, harvest)
-    }
-    # STRAY --------------------------------------------------------------------
-    if (mode == "simulate") {
+      
+      # STRAY --------------------------------------------------------------------
       adults_after_stray <- apply_straying(year, adults_after_harvest$natural_adults,
                                            adults_after_harvest$hatchery_adults,
                                            total_releases = ..params$hatchery_release,
                                            release_month = 1,
                                            flows_oct_nov = ..params$flows_oct_nov,
                                            flows_apr_may = ..params$flows_apr_may,
-                                           fallRunDSM::monthly_mean_pdo)
-    }
-    
-    # APPLY EN ROUTE SURVIVAL ---------------------------------------------------
-    if (mode == "simulate") {
+                                           winterRunDSM::monthly_mean_pdo)
+      
+      # APPLY EN ROUTE SURVIVAL ---------------------------------------------------
       spawners <- apply_enroute_survival(year,
                                          adults = adults_after_stray,
                                          month_return_proportions = ..params$month_return_proportions,
@@ -253,16 +231,12 @@ winter_run_model <- function(scenario = NULL,
                                          ..surv_adult_enroute_int = ..params$..surv_adult_enroute_int,
                                          .adult_en_route_migratory_temp = ..params$.adult_en_route_migratory_temp,
                                          .adult_en_route_bypass_overtopped = ..params$.adult_en_route_bypass_overtopped,
-                                         hatchery_release = ..params$hatchery_release,
                                          stochastic = stochastic)
     }
     
-    
-    
-    init_adults <- round(spawners$init_adults)
+    init_adults <- spawners$init_adults
     
     output$spawners[ , year] <- init_adults
-    
     # # For use in the r2r metrics ---------------------------------------------
     # TODO fix handling for PHOS on non spawn and 0 fish watersheds
     phos <- ifelse(is.na(1 - spawners$proportion_natural), 0, 1 - spawners$proportion_natural)
@@ -276,70 +250,85 @@ winter_run_model <- function(scenario = NULL,
         perc_diff <- (phos - output$phos[, (year - 2)]) /  output$phos[, (year - 2)]
         renaturing_tribs <- which(phos_diff_two_years < 0 & phos_diff_last_year < 0)
         proportion_renaturing <- ifelse(names(phos_diff_two_years) %in% names(renaturing_tribs), abs(phos_diff_two_years), 0)
-        
         total_renaturing_in_year <- spawners$init_adults * (1 - spawners$proportion_natural) * proportion_renaturing
         total_natural_with_renaturing <- total_renaturing_in_year + spawners$init_adults * spawners$proportion_natural
         natural_proportion_with_renat <-  total_natural_with_renaturing / spawners$init_adults
         natural_proportion_with_renat <- ifelse(is.nan(natural_proportion_with_renat), 0, natural_proportion_with_renat)
-        
       } else {
         natural_proportion_with_renat <-  spawners$proportion_natural
       }
-      } else {
-        natural_proportion_with_renat <-  spawners$proportion_natural
-      }
+    } else {
+      natural_proportion_with_renat <-  spawners$proportion_natural
+    }
     
     output$proportion_natural_at_spawning[ , year] <- natural_proportion_with_renat
     output$phos[ , year] <- 1 - natural_proportion_with_renat
     # end R2R metric logic -----------------------------------------------------
     
     egg_to_fry_surv <- surv_egg_to_fry(
-      proportion_natural = natural_proportion_with_renat, # update to new prop nat (renaturing logic applied)      
+      proportion_natural = natural_proportion_with_renat, # update to new prop nat (renaturing logic applied),
       scour = ..params$prob_nest_scoured,
-      .surv_egg_to_fry_int = ..params$.surv_egg_to_fry_int,
-      ..surv_egg_to_fry_mean_egg_temp_effect = ..params$..surv_egg_to_fry_mean_egg_temp_effect,
+      temperature_effect = ..params$mean_egg_temp_effect,
       .proportion_natural = ..params$.surv_egg_to_fry_proportion_natural,
-      .scour = ..params$.surv_egg_to_fry_scour
+      .scour = ..params$.surv_egg_to_fry_scour,
+      ..surv_egg_to_fry_int = ..params$..surv_egg_to_fry_int
     )
     
-    min_spawn_habitat <- apply(..params$spawning_habitat[ , 1:4, year], 1, min)
+    min_spawn_habitat <- apply(..params$spawning_habitat[ , 3:6, year], 1, min)
     
-    accumulated_degree_days <- cbind(jan = rowSums(..params$degree_days[ , 1:4, year]),
-                                     feb = rowSums(..params$degree_days[ , 2:4, year] ),
-                                     march = rowSums(..params$degree_days[ , 3:4, year] ),
-                                     april = ..params$degree_days[ , 4, year])
+    # Migatory accumulated degree days and associated prespawn survival 
+    accumulated_degree_days <- cbind(march = rowSums(..params$degree_days[ , 3:6, year]),
+                                     april = rowSums(..params$degree_days[ , 4:6, year]),
+                                     may = rowSums(..params$degree_days[ , 5:6, year]),
+                                     june = ..params$degree_days[ , 6, year])
     
     average_degree_days <- apply(accumulated_degree_days, 1, weighted.mean, ..params$month_return_proportions)
     
-    prespawn_survival <- surv_adult_prespawn(average_degree_days,
-                                             .adult_prespawn_int = ..params$.adult_prespawn_int,
-                                             .deg_day = ..params$.adult_prespawn_deg_day)
+    # R2R: above and below degree days
+    average_degree_days_abv_dam <- apply(cbind(march = rowSums(..params$degree_days_abv_dam[ , 3:6, year]),
+                                               april = rowSums(..params$degree_days_abv_dam[ , 4:6, year]),
+                                               may = rowSums(..params$degree_days_abv_dam[ , 5:6, year]),
+                                               june = ..params$degree_days_abv_dam[ , 6, year]), 1, weighted.mean, ..params$month_return_proportions)
     
+    prespawn_survival <- surv_adult_prespawn(average_degree_days,
+                                             ..surv_adult_prespawn_int = ..params$..surv_adult_prespawn_int,
+                                             .deg_day = ..params$.adult_prespawn_deg_day)
+    # R2R: above and below prespawn
+    prespawn_survival_abv_dam <- .95 #TODO confirm with tech team, use max fall run surv
+    
+    # Apply SR pools logic, this reflects prespawn survival during holding period 
+    # R2R: init adults split into above and below dam and apply prespawn separately and 
+    # then add them back together 
     init_adults <- if (stochastic) {
-      rbinom(n = 31, size = round(init_adults), prob = prespawn_survival)
+      blw_dam <- rbinom(31, round(init_adults), (prespawn_survival * (1 - ..params$above_dam_spawn_proportion))) 
+      abv_dam <- rbinom(31, round(init_adults), (prespawn_survival * ..params$above_dam_spawn_proportion))
+      blw_dam + abv_dam
     } else {
-      round(init_adults * prespawn_survival)
+      blw_dam <- round((1 - ..params$above_dam_spawn_proportion) * init_adults * prespawn_survival, 0) 
+      abv_dam <- round(..params$above_dam_spawn_proportion * init_adults * prespawn_survival_abv_dam, 0)
+      blw_dam + abv_dam
     }
     
-    spawntime_proportions <- c(0.2222222, 0.5555556, 0.2222222)
+    # R2R: abv dam degree days
+    average_degree_days_abv_dam <- rowSums(..params$degree_days_abv_dam[ , 7:10, year]) * (1 - holding_split) + 
+      rowSums(..params$degree_days_abv_dam[ , 7:9, year]) * holding_split
     
-    spawning_accumulated_degree_days <- cbind(may = rowSums(..params$degree_days[ , 5:7, year]), # Spawn in may only may degree days
-                                              june = rowSums(..params$degree_days[ , 6:7, year]),
-                                              july = ..params$degree_days[ , 7, year])
-    
-    spawning_average_degree_days <- apply(spawning_accumulated_degree_days, 1, weighted.mean, spawntime_proportions)
-    prespawn_survival <- surv_adult_prespawn(spawning_average_degree_days,
-                                             .adult_prespawn_int = ..params$.adult_prespawn_int,
+    prespawn_survival <- surv_adult_prespawn(average_degree_days,
+                                             ..surv_adult_prespawn_int = ..params$..surv_adult_prespawn_int,
                                              .deg_day = ..params$.adult_prespawn_deg_day)
     
-    # end R2R logic ------------------------------------------------------------
-    # 
+    # R2R: above and below prespawn
+    prespawn_survival_abv_dam <- .95 #TODO confirm with tech team, use max fall run surv
+    
+    # calculate juveniles 
     juveniles <- spawn_success(escapement = init_adults,
                                proportion_natural = natural_proportion_with_renat, # R2R ADDS NEW PARAM
                                hatchery_age_distribution = hatch_age_dist, # R2R ADDS NEW PARAM
                                natural_age_distribution = natural_age_dist, # R2R ADDS NEW PARAM
                                fecundity_lookup = ..params$fecundity_lookup, # R2R ADDS NEW PARAM
-                               adult_prespawn_survival = prespawn_survival,
+                               adult_prespawn_survival = prespawn_survival, 
+                               adult_prespawn_survival_abv_dam = prespawn_survival_abv_dam, # R2R: ADDS NEW PARAM for abv dam
+                               abv_dam_spawn_proportion = ..params$above_dam_spawn_proportion, # R2R: ADDS NEW PARAM for abv dam
                                egg_to_fry_survival = egg_to_fry_surv,
                                prob_scour = ..params$prob_nest_scoured,
                                spawn_habitat = min_spawn_habitat,
@@ -347,14 +336,29 @@ winter_run_model <- function(scenario = NULL,
                                redd_size = ..params$spawn_success_redd_size,
                                fecundity = ..params$spawn_success_fecundity,
                                stochastic = stochastic)
+  
     # R2R hatchery logic -------------------------------------------------------
     # Currently adds only on major hatchery rivers (American, Battle, Feather, Merced, Moke)
     # Add all as large fish
     total_juves_pre_hatchery <- rowSums(juveniles)
     natural_juveniles <- total_juves_pre_hatchery  * natural_proportion_with_renat
     total_juves_pre_hatchery <- rowSums(juveniles)
-    juveniles <- juveniles + sweep(..params$hatchery_release, MARGIN=2, (1 - ..params$hatchery_release_proportion_bay), "*")
-    # stray_rates_in_river_releases <- hatchery_adult_stray(hatchery = )
+    # TODO add ability to vary release per year
+    juveniles <- juveniles + ..params$hatchery_release
+    
+    # Create new prop natural including hatch releases that we can use to apply to adult returns
+    proportion_natural_juves_in_tribs <- natural_juveniles / rowSums(juveniles)
+    output$proportion_natural_juves_in_tribs[ , year] <- proportion_natural_juves_in_tribs
+    
+    # # For use in the r2r metrics ---------------------------------------------
+    d <- data.frame(juveniles)
+    colnames(d) <- c("s", "m", "l", "vl")
+    d$watershed <- winterRunDSM::watershed_labels
+    d <- d |> tidyr::pivot_longer(names_to = "size", values_to = "juveniles", -watershed)
+    d$year <- year
+    output$juveniles <- dplyr::bind_rows(output$juveniles, d)
+    
+    # end R2R metric -----------------------------------------------------------
     
     fish_list <- lapply(1:8, function(i) list(juveniles = juveniles,
                                               lower_mid_sac_fish = lower_mid_sac_fish,
@@ -483,6 +487,7 @@ winter_run_model <- function(scenario = NULL,
         migratory_survival$delta[which(migratory_survival$delta * 2 > 1)] <- 1
       }
       
+      # TODO keep movement hypothesis weights?
       # hypothesis are layed out as follows:
       # 1. base filling + base
       # 2. base filling + snow
@@ -790,8 +795,4 @@ winter_run_model <- function(scenario = NULL,
   return(output)
   
 }
-
-
-
-
 
