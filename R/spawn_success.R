@@ -16,7 +16,7 @@ spawn_success <- function(escapement,
                           proportion_natural, # R2R ADDS NEW PARAM
                           hatchery_age_distribution, # R2R ADDS NEW PARAM
                           natural_age_distribution, # R2R ADDS NEW PARAM
-                          fecundity_lookup = fallRunDSM::params$fecundity_lookup, # R2R ADDS NEW PARAM
+                          fecundity_lookup = winterRunDSM::params$fecundity_lookup, # R2R ADDS NEW PARAM
                           adult_prespawn_survival, 
                           egg_to_fry_survival,
                           prob_scour, spawn_habitat,
@@ -37,7 +37,7 @@ stochastic){
 
   # caluclate natural fry
   # TODO remove dependencies and clean up code
-  total_nat_spawn <- dplyr::tibble(watershed = fallRunDSM::watershed_labels, spawners = round(spawners * proportion_natural)) |>
+  total_nat_spawn <- dplyr::tibble(watershed = winterRunDSM::watershed_labels, spawners = round(spawners * proportion_natural)) |>
     dplyr::left_join(natural_age_distribution, by = c("watershed" = "watershed")) |>
     dplyr::mutate(age_2_spawners = round(spawners * prop_2),
                   age_3_spawners = round(spawners * prop_3),
@@ -46,7 +46,7 @@ stochastic){
     dplyr::select(-c(prop_2, prop_3, prop_4, prop_5, spawners, watershed)) |>
     as.matrix()
   
-  dimnames(total_nat_spawn) <- list(c(fallRunDSM::watershed_labels), c("2", "3", "4", "5"))
+  dimnames(total_nat_spawn) <- list(c(winterRunDSM::watershed_labels), c("2", "3", "4", "5"))
   fecundity_natural <- fecundity_lookup |>
     dplyr::filter(origin == "Wild") |>
     dplyr::pull(fecundity)
@@ -55,7 +55,7 @@ stochastic){
   natural_fry <- suppressWarnings(rowSums(sweep(total_nat_spawn * (1 - prob_scour), 2, fecundity_natural, "*") * egg_to_fry_survival))
   
   # nat_spawn_with_ages[1] <- total_nat_spawn * natural_age_distribution
-  total_hatch_spawn <- dplyr::tibble(watershed = fallRunDSM::watershed_labels, spawners = round(spawners * (1 - proportion_natural))) |>
+  total_hatch_spawn <- dplyr::tibble(watershed = winterRunDSM::watershed_labels, spawners = round(spawners * (1 - proportion_natural))) |>
     dplyr::left_join(hatchery_age_distribution, by = c("watershed" = "watershed")) |>
     dplyr::mutate(age_2_spawners = round(spawners * prop_2),
                   age_3_spawners = round(spawners * prop_3),
@@ -64,7 +64,7 @@ stochastic){
     dplyr::select(-c(prop_2, prop_3, prop_4, prop_5, spawners, watershed)) |>
     as.matrix()
   
-  dimnames(total_hatch_spawn) <- list(c(fallRunDSM::watershed_labels), c("2", "3", "4", "5"))
+  dimnames(total_hatch_spawn) <- list(c(winterRunDSM::watershed_labels), c("2", "3", "4", "5"))
   fecundity_hatch <- fecundity_lookup |>
     dplyr::filter(origin == "Hatchery") |>
     dplyr::pull(fecundity)

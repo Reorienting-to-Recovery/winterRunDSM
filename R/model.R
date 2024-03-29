@@ -6,7 +6,7 @@
 #' @param seeds The default value is NULL runs the model in seeding mode,
 #' returning a 31 by 25 matrix with the first four years of seeded adults. This
 #' returned value can be fed into the model again as the value for the seeds argument
-#' @param ..params Parameters for model and submodels. Defaults to \code{fallRunDSM::\code{\link{params}}}.
+#' @param ..params Parameters for model and submodels. Defaults to \code{winterRunDSM::\code{\link{params}}}.
 #' @param stochastic \code{TRUE} \code{FALSE} value indicating if model should be run stochastically. Defaults to \code{FALSE}.
 #' @source IP-117068
 #' @examples
@@ -41,7 +41,7 @@ winter_run_model <- function(scenario = NULL,
     # Apply spawn decay multiplier
     scenario_data <- DSMscenario::load_scenario(scenario,
                                                 habitat_inputs = habitats,
-                                                species = DSMscenario::species$SPRING_RUN,
+                                                species = DSMscenario::species$WINTER_RUN,
                                                 spawn_decay_rate = ..params$spawn_decay_rate,
                                                 rear_decay_rate = ..params$rear_decay_rate,
                                                 spawn_decay_multiplier = ..params$spawn_decay_multiplier,
@@ -242,7 +242,7 @@ winter_run_model <- function(scenario = NULL,
     phos <- ifelse(is.na(1 - spawners$proportion_natural), 0, 1 - spawners$proportion_natural)
     if (mode == "simulate" & year > 5 & (sum(..params$hatchery_release) + sum(..params$hatchery_releases_at_chipps)) == 0) {
       natural_proportion_with_renat <- rep(1, 31)
-      names(natural_proportion_with_renat) <- fallRunDSM::watershed_labels
+      names(natural_proportion_with_renat) <- winterRunDSM::watershed_labels
     } else if (year > 3){
       phos_diff_two_years <- ifelse(is.na(phos - output$phos[, (year - 2)]), 0, phos - output$phos[, (year - 2)])
       phos_diff_last_year <- ifelse(is.na(phos - output$phos[, (year - 1)]), 0, phos - output$phos[, (year - 1)])
@@ -383,7 +383,7 @@ winter_run_model <- function(scenario = NULL,
     # # For use in the r2r metrics ---------------------------------------------
     d <- data.frame(juveniles)
     colnames(d) <- c("s", "m", "l", "vl")
-    d$watershed <- fallRunDSM::watershed_labels
+    d$watershed <- winterRunDSM::watershed_labels
     d <- d |> tidyr::pivot_longer(names_to = "size", values_to = "juveniles", -watershed)
     d$year <- year
     output$juveniles <- dplyr::bind_rows(output$juveniles, d)

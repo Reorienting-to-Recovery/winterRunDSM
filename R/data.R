@@ -272,3 +272,7 @@ NULL
 #' @rdname params
 #' @format NULL
 "params_2019"
+
+#' @rdname params
+#' @format NULL
+"r_to_r_baseline_params"
