@@ -14,10 +14,10 @@ ocean_entry_success <- function(migrants, month, avg_ocean_transition_month,
                                 .ocean_entry_success_length = winterRunDSM::params$.ocean_entry_success_length,
                                 ..ocean_entry_success_int = winterRunDSM::params$..ocean_entry_success_int,
                                 .ocean_entry_success_months = winterRunDSM::params$.ocean_entry_success_months, 
-stochastic){
-
+                                stochastic){
+  
   month_since <- ifelse(month <= avg_ocean_transition_month, 0, max(1, month - avg_ocean_transition_month))
-
+  
   survival_probs <- NULL
   for(i in 1:dim(migrants)[1]) {
     survival_probs <- rbind(survival_probs,
@@ -25,9 +25,9 @@ stochastic){
                                               .ocean_entry_success_months * month_since +
                                               .ocean_entry_success_length))
   }
-
+  
   survival_probs <- pmin(survival_probs, 1)
-
+  
   if (stochastic) {
     survived <- t(sapply(1:31, function(watershed) {
       rbinom(4, size = migrants[watershed, ], prob = survival_probs[watershed, ])
@@ -35,8 +35,7 @@ stochastic){
   } else {
     survived <- round(survival_probs * migrants)
   }
-
+  
   if (month_since == 0) rep(0, 31) else rowSums(survived)
-
+  
 }
-

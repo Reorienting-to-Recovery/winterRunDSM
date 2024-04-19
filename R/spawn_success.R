@@ -16,21 +16,30 @@ spawn_success <- function(escapement,
                           proportion_natural, # R2R ADDS NEW PARAM
                           hatchery_age_distribution, # R2R ADDS NEW PARAM
                           natural_age_distribution, # R2R ADDS NEW PARAM
-                          fecundity_lookup = winterRunDSM::params$fecundity_lookup, # R2R ADDS NEW PARAM
+                          fecundity_lookup = fallRunDSM::params$fecundity_lookup, # R2R ADDS NEW PARAM
                           adult_prespawn_survival, 
+                          adult_prespawn_survival_abv_dam, # ADDS NEW PARAM for abv dam
+                          abv_dam_spawn_proportion, # ADDS NEW PARAM for abv dam
                           egg_to_fry_survival,
                           prob_scour, spawn_habitat,
-                          sex_ratio = winterRunDSM::params$spawn_success_sex_ratio,
-                          redd_size = winterRunDSM::params$spawn_success_redd_size,
-                          fecundity = winterRunDSM::params$spawn_success_fecundity, 
-stochastic){
+                          stochastic,
+                          sex_ratio = springRunDSM::params$spawn_success_sex_ratio,
+                          redd_size = springRunDSM::params$spawn_success_redd_size,
+                          fecundity = springRunDSM::params$spawn_success_fecundity){
 
   capacity <- spawn_habitat / redd_size
 
   spawner_potential <- if(stochastic) {
-    rbinom(31, round(escapement), (adult_prespawn_survival * sex_ratio))
+    # R2R Adds abv dam logic 
+    blw_dam <- rbinom(31, round(escapement), ((1 - abv_dam_spawn_proportion) * adult_prespawn_survival * sex_ratio))
+    abv_dam <- rbinom(31, round(escapement), (abv_dam_spawn_proportion * adult_prespawn_survival * sex_ratio))
+    blw_dam + abv_dam
   } else {
-    escapement * adult_prespawn_survival * sex_ratio
+    # R2R Adds abv dam logic 
+    # round(escapement * adult_prespawn_survival * sex_ratio)
+    blw_dam <- round((1 - abv_dam_spawn_proportion) * escapement * adult_prespawn_survival * sex_ratio, 0) 
+    abv_dam <- round(abv_dam_spawn_proportion * escapement * adult_prespawn_survival_abv_dam * sex_ratio, 0)
+    blw_dam + abv_dam
   }
 
   spawners <- pmin(spawner_potential, capacity)

@@ -1,5 +1,5 @@
 library(tidyverse)
-remotes::install_github("Reorienting-to-Recovery/DSMhabitat")
+# remotes::install_github("Reorienting-to-Recovery/DSMhabitat")
 library(DSMhabitat)
 
 
@@ -123,6 +123,7 @@ r_to_r_baseline_params <- list(
   vernalis_temps = DSMtemperature::vernalis_temperature,
   prisoners_point_temps = DSMtemperature::prisoners_point_temperature,
   degree_days = DSMtemperature::degree_days$biop_itp_2018_2019,
+  degree_days_abv_dam =  DSMtemperature::degree_days_sr_abv_dam$biop_itp_2018_2019, # R2R: updated degree days for above dam to 13C threshold above dam
   mean_egg_temp_effect = DSMtemperature::egg_temperature_effect$winter_run,
   avg_temp = DSMtemperature::stream_temperature$biop_itp_2018_2019,
   avg_temp_delta = DSMtemperature::delta_temperature,
@@ -147,6 +148,8 @@ r_to_r_baseline_params <- list(
   prob_strand_early = DSMhabitat::prob_strand_early,
   prob_strand_late = DSMhabitat::prob_strand_late,
   prob_nest_scoured = DSMhabitat::prob_nest_scoured,
+  above_dam_spawn_proportion = DSMhabitat::above_dam_spawn_proportion$wr, # R2R - above dam proportion 
+  above_dam_rearing_proportion = DSMhabitat::above_dam_rearing_proportion$wr, # R2R - above dam proportion
   
   # TODO fix this update through out the model (remove ..)  
   ..surv_egg_to_fry_mean_egg_temp_effect = winterRunDSM::params_2019$..surv_egg_to_fry_mean_egg_temp_effect,
@@ -167,7 +170,11 @@ r_to_r_baseline_params <- list(
   # R2R specific metrics
   hatchery_release = winterRunDSM::winter_hatchery_release, #TODO update with renes hatchery numbers and document
   hatchery_releases_at_chipps = matrix(0, nrow = 31, ncol = 4, dimnames = list(winterRunDSM::watershed_labels, winterRunDSM::size_class_labels)),
-  fecundity_lookup = winterRunDSM::fecundity_by_age
+  fecundity_lookup = winterRunDSM::fecundity_by_age,
+  
+  # Flows for stray 
+  flows_oct_nov = DSMflow::hatchery_oct_nov_flows$biop_itp_2018_2019,
+  flows_apr_may = DSMflow::hatchery_apr_may_flows$biop_itp_2018_2019
   
 )
 

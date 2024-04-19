@@ -100,3 +100,96 @@ usethis::use_data(prey_density, overwrite = TRUE)
 # should be moved to a data package?
 prey_density_delta <- c("med", "med")
 usethis::use_data(prey_density_delta, overwrite = TRUE)
+
+hatchery_release_proportion_bay <- 0
+# names(hatchery_release_proportion_bay1) <- fallRunDSM::watershed_labels
+usethis::use_data(hatchery_release_proportion_bay, overwrite = TRUE)
+
+# R2R cache data objects
+# see hatchery markdown/analysis and harvest analysis for data objects
+# TODO eventually clean up and move into this script
+
+
+# distances from hatchery to bay
+hatchery_to_bay_distance <- c(445, 239, 138, 133, 270)
+names(hatchery_to_bay_distance) <- c("coleman", "feather", "nimbus", "mokelumne", "merced")
+usethis::use_data(hatchery_to_bay_distance, overwrite = TRUE)
+
+all_data <- read_csv("data-raw/stray-eda/alldata_formodel_031918.csv")
+betareg_normalizing_context <- all_data |>
+  select(dist_hatch, run_year, age, Total_N, rel_month, flow.1011, flow_discrep, mean_PDO_retn) |>
+  map(\(x) list("mean" = mean(x), "sd" = sd(x)))
+
+usethis::use_data(betareg_normalizing_context, overwrite = TRUE)
+
+hatchery_to_watershed_lookup <- c(
+  "coleman" = "Battle Creek",
+  "feather" = "Feather River",
+  "nimbus" = "American River",
+  "mokelumne" = "Mokelumne River",
+  "merced" = "Merced River"
+)
+usethis::use_data(hatchery_to_watershed_lookup, overwrite = TRUE)
+
+watershed_to_hatchery_lookup <- names(winterRunDSM::hatchery_to_watershed_lookup)
+names(watershed_to_hatchery_lookup) <- winterRunDSM::hatchery_to_watershed_lookup
+
+usethis::use_data(watershed_to_hatchery_lookup, overwrite = TRUE)
+
+# mean PDO
+raw_ocean_pdo <- read_csv("data-raw/stray-eda/PDO_monthly_Mantua.csv", skip = 1, col_names = c("year", "month", "PDO"))
+monthly_mean_pdo <- raw_ocean_pdo |>
+  filter(year %in% 1980:2002) |>
+  mutate(date = as_date(paste0(year, "-", month, "-01")))
+
+usethis::use_data(monthly_mean_pdo, overwrite = TRUE)
+
+
+straying_destinations <-
+  matrix(nrow = 31, ncol = 6, dimnames = list(watershed_labels, c(names(winterRunDSM::hatchery_to_watershed_lookup), "default")))
+
+default_prop_coleman <- ((100 - 35 - 13 - 12)/28)/100
+default_prop_feather <- ((100 - 44 - 16 - 14)/28)/100
+default_prop_nimbus <- ((100 - 41 - 18)/29)/100
+default_prop_mokelumne <- ((100 - 44 - 21 )/29)/100
+default_prop_merced <- ((100 - 25 - 20 - 14 )/28)/100
+
+straying_destinations[, "coleman"] <- default_prop_coleman
+straying_destinations["Feather River", "coleman"] <- .13
+straying_destinations["Upper Sacramento River", "coleman"] <- .35
+straying_destinations["Clear Creek", "coleman"] <- .12
+
+straying_destinations[, "feather"] <- default_prop_feather
+straying_destinations["Upper Sacramento River", "feather"] <- .44
+straying_destinations["Yuba River", "feather"] <- .16
+straying_destinations["Clear Creek", "feather"] <- .14
+
+straying_destinations[, "nimbus"] <- default_prop_nimbus
+straying_destinations["Mokelumne River", "nimbus"] <- .41
+straying_destinations["Yuba River", "nimbus"] <- .18
+
+
+straying_destinations[, "mokelumne"] <- default_prop_mokelumne
+straying_destinations["American River", "mokelumne"] <- .44
+straying_destinations["Stanislaus River", "mokelumne"] <- .21
+
+
+straying_destinations[, "merced"] <- default_prop_merced
+straying_destinations["Mokelumne River", "merced"] <- .25
+straying_destinations["Stanislaus River", "merced"] <- .20
+straying_destinations["American River", "merced"] <- .14
+
+straying_destinations[, "default"] <- 1/31
+
+
+# TODO make the non spawning locations be 0
+usethis::use_data(straying_destinations, overwrite = TRUE)
+
+natural_straying_destinations <- matrix(1/31, nrow = 31, ncol = 4)
+
+rmultinom(n = 1, size = matrix(1:4, ncol = 2), prob = matrix(1:4, ncol = 2))
+
+# Cache hatchery releases at Chipps
+hatchery_releases_at_chipps = matrix(0, nrow = 31, ncol = 4,
+                                     dimnames = list(fallRunDSM::watershed_labels, fallRunDSM::size_class_labels))
+usethis::use_data(hatchery_releases_at_chipps,overwrite = TRUE)
