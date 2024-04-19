@@ -12,7 +12,10 @@ route_bypass(
   bypass_habitat,
   migration_survival_rate,
   territory_size,
-  stochastic
+  stochastic,
+  hypothesis,
+  filling_fn = fallRunDSM::fill_regional,
+  filling_args = NULL
 )
 }
 \arguments{
@@ -25,6 +28,12 @@ route_bypass(
 \item{territory_size}{Array of juvenile fish territory requirements for \code{\link{fill_regional}}}
 
 \item{stochastic}{\code{TRUE} \code{FALSE} value indicating if model is being run stochastically}
+
+\item{hypothesis}{Movement hypothesis to use for routing}
+
+\item{filling_fn}{optional filling function to use in routing procedure, by default it uses fallRunDSM::fill_regional}
+
+\item{filling_args}{when passing custom filling function, pass function specific arguments as a list here}
 }
 \description{
 Determines if juveniles remain in the bypass or out migrate

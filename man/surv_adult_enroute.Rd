@@ -10,7 +10,6 @@ IP-117068
 surv_adult_enroute(
   migratory_temp,
   bypass_overtopped,
-  adult_harvest,
   ..surv_adult_enroute_int = winterRunDSM::params$..surv_adult_enroute_int,
   .migratory_temp = winterRunDSM::params$.adult_en_route_migratory_temp,
   .bypass_overtopped = winterRunDSM::params$.adult_en_route_bypass_overtopped
@@ -20,8 +19,6 @@ surv_adult_enroute(
 \item{migratory_temp}{Variable representing proportion of migratory corridor temperature above  20°C}
 
 \item{bypass_overtopped}{Indicator for bypass overtopped}
-
-\item{adult_harvest}{Adult harvest rate}
 
 \item{..surv_adult_enroute_int}{Intercept}
 

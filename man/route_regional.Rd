@@ -16,8 +16,15 @@ route_regional(
   prop_pulse_flows,
   migration_survival_rate,
   proportion_flow_bypass,
+  filling_fn = fallRunDSM::fill_regional,
+  filling_args = NULL,
+  movement_fn = NULL,
+  movement_months = NULL,
+  movement_args = NULL,
   detour = NULL,
   territory_size,
+  freeport_flows,
+  vernalis_flows,
   stochastic
 )
 }
@@ -38,11 +45,25 @@ route_regional(
 
 \item{proportion_flow_bypass}{Variable describing the proportion of flows routed through the bypasses, more details at \code{\link[DSMflow]{proportion_flow_bypasses}}}
 
+\item{filling_fn}{optional filling function to use in routing procedure, by default it uses fallRunDSM::fill_regional}
+
+\item{filling_args}{when passing custom filling function, pass function specific arguments as a list here}
+
+\item{movement_fn}{optional movement function to use in routing procedure}
+
+\item{movement_months}{when passing custom movement function, pass movement months here}
+
+\item{movement_args}{when passing custom movement function, pass function specific arguments as a list here}
+
 \item{detour}{Values can be 'sutter' or 'yolo' if some juveniles are detoured on to that bypass, otherwise NULL}
 
 \item{territory_size}{Array of juvenile fish territory requirements for \code{\link{fill_regional}}}
 
 \item{stochastic}{\code{TRUE} \code{FALSE} value indicating if model is being run stochastically}
+
+\item{freeport_flow}{Monthly mean flow at freeport in cubic feet per second}
+
+\item{vernalis_flow}{Monthly mean flow at vernalis in cubic feet per second}
 }
 \description{
 Determines if juveniles stay in the region (Sections of Mainstem

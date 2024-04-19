@@ -17,8 +17,8 @@ adult_stray(
   .intercept = winterRunDSM::params$.adult_stray_intercept,
   .wild = winterRunDSM::params$.adult_stray_wild,
   .natal_flow = winterRunDSM::params$.adult_stray_natal_flow,
- 
-    .cross_channel_gates_closed = winterRunDSM::params$.adult_stray_cross_channel_gates_closed,
+  .cross_channel_gates_closed =
+    winterRunDSM::params$.adult_stray_cross_channel_gates_closed,
   .prop_bay_trans = winterRunDSM::params$.adult_stray_prop_bay_trans,
   .prop_delta_trans = winterRunDSM::params$.adult_stray_prop_delta_trans
 )

@@ -22,12 +22,10 @@ surv_juv_rear(
   .surv_juv_rear_contact_points = winterRunDSM::params$.surv_juv_rear_contact_points,
   ..surv_juv_rear_contact_points = winterRunDSM::params$..surv_juv_rear_contact_points,
   .surv_juv_rear_prop_diversions = winterRunDSM::params$.surv_juv_rear_prop_diversions,
- 
-    ..surv_juv_rear_prop_diversions = winterRunDSM::params$..surv_juv_rear_prop_diversions,
- 
-    .surv_juv_rear_total_diversions = winterRunDSM::params$.surv_juv_rear_total_diversions,
- 
-    ..surv_juv_rear_total_diversions = winterRunDSM::params$..surv_juv_rear_total_diversions,
+  ..surv_juv_rear_prop_diversions = winterRunDSM::params$..surv_juv_rear_prop_diversions,
+  .surv_juv_rear_total_diversions = winterRunDSM::params$.surv_juv_rear_total_diversions,
+  ..surv_juv_rear_total_diversions =
+    winterRunDSM::params$..surv_juv_rear_total_diversions,
   .stranded = winterRunDSM::params$.surv_juv_rear_stranded,
   .medium = winterRunDSM::params$.surv_juv_rear_medium,
   .large = winterRunDSM::params$.surv_juv_rear_large,

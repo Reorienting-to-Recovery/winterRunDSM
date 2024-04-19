@@ -11,8 +11,9 @@ winter_run_model(
   scenario = NULL,
   mode = c("seed", "simulate", "calibrate"),
   seeds = NULL,
-  ..params = winterRunDSM::params,
-  stochastic = FALSE
+  ..params = winterRunDSM::r_to_r_baseline_params,
+  stochastic = FALSE,
+  delta_surv_inflation = FALSE
 )
 }
 \arguments{
@@ -24,12 +25,12 @@ winter_run_model(
 returning a 31 by 25 matrix with the first four years of seeded adults. This
 returned value can be fed into the model again as the value for the seeds argument}
 
-\item{..params}{Parameters for model and submodels. Defaults to \code{fallRunDSM::\code{\link{params}}}.}
+\item{..params}{Parameters for model and submodels. Defaults to \code{winterRunDSM::\code{\link{params}}}.}
 
 \item{stochastic}{\code{TRUE} \code{FALSE} value indicating if model should be run stochastically. Defaults to \code{FALSE}.}
 }
 \description{
-Winter Run Chinook life cycle model used for CVPIA's Structured
+Winter Run Chinook life cycle model used for Reorienting to Recovery's Structured
 Decision Making Process
 }
 \examples{

@@ -9,6 +9,10 @@ IP-117068
 \usage{
 spawn_success(
   escapement,
+  proportion_natural,
+  hatchery_age_distribution,
+  natural_age_distribution,
+  fecundity_lookup = winterRunDSM::params$fecundity_lookup,
   adult_prespawn_survival,
   egg_to_fry_survival,
   prob_scour,

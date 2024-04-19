@@ -14,6 +14,8 @@ route(
   inchannel_habitat,
   floodplain_habitat,
   prop_pulse_flows,
+  vernalis_flows,
+  freeport_flows,
   .pulse_movement_intercept,
   .pulse_movement_proportion_pulse,
   .pulse_movement_medium,
@@ -22,6 +24,11 @@ route(
   .pulse_movement_medium_pulse,
   .pulse_movement_large_pulse,
   .pulse_movement_very_large_pulse,
+  filling_fn = winterRunDSM::fill_natal,
+  filling_args = NULL,
+  movement_fn = NULL,
+  movement_args = NULL,
+  movement_months = NULL,
   territory_size,
   stochastic
 )

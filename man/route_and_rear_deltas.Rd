@@ -24,6 +24,7 @@ route_and_rear_deltas(
   growth_rates,
   location_index = c(rep(1, 24), 3, rep(2, 2), rep(4, 4)),
   territory_size,
+  filling_fn = winterRunDSM::fill_regional,
   stochastic
 )
 }
@@ -60,6 +61,8 @@ route_and_rear_deltas(
 "northern_fish", "cosumnes_mokelumne_fish", "calaveras_fish", or "southern_fish" respectively}
 
 \item{territory_size}{Array of juvenile fish territory requirements for \code{\link{fill_natal}}}
+
+\item{filling_fn}{optional filling function to use in routing procedure, by default it uses winterRunDSM::fill_regional}
 
 \item{stochastic}{\code{TRUE} \code{FALSE} value indicating if model is being run stochastically}
 }

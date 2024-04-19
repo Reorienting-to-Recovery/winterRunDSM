@@ -4,11 +4,14 @@
 \name{params}
 \alias{params}
 \alias{params_2019}
+\alias{r_to_r_baseline_params}
 \title{Model Parameters}
 \usage{
 params
 
 params_2019
+
+r_to_r_baseline_params
 }
 \description{
 A list containing all parameters needed for running the \code{\link{winter_run_model}}. Parameters with a single
