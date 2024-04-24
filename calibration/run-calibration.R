@@ -14,8 +14,16 @@ library(readr)
 source("calibration/fitness.R")
 source("calibration/update-params.R")
 
-params <- DSMCalibrationData::set_synth_years(winterRunDSM::params)
+params <- DSMCalibrationData::set_synth_years(winterRunDSM::r_to_r_baseline_params)
 
+# Test model 
+test <- winterRunDSM::winter_run_model(mode = "calibrate", 
+                                      seeds = DSMCalibrationData::grandtab_imputed$winter,
+                                      ..params = params, 
+                                      stochastic = FALSE, 
+                                      delta_surv_inflation = FALSE)
+
+test
 # Perform calibration --------------------
 res <- ga(type = "real-valued",
           fitness =
@@ -28,8 +36,8 @@ res <- ga(type = "real-valued",
             ),
           lower = c(2.5, rep(-3.5, 11)),
           upper = rep(3.5, 12),
-          popSize = 150,
-          maxiter = 10000,
+          popSize = 100,
+          maxiter = 100000,
           run = 50,
           parallel = TRUE,
           pmutation = .4)

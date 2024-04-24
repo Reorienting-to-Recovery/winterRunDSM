@@ -38,7 +38,7 @@ winter_run_fitness <- function(
                               stochastic = FALSE,
                               ..params = params_init)
     
-    known_nats <- known_adults[keep, 6:19, drop = FALSE] * (1 - params_init$proportion_hatchery[keep])
+    known_nats <- known_adults[keep, 6:20, drop = FALSE] 
     mean_escapent <-rowMeans(known_nats, na.rm = TRUE)
     
     sse <- sum(((preds[keep, , drop = FALSE] - known_nats)^2)/mean_escapent, na.rm = TRUE)
