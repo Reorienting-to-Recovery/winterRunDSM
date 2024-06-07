@@ -39,7 +39,7 @@ Detailed overviews of each update including the literature or data source are pr
 
 The first 3 years of the model hatchery returns are initiated using CWT data and the same logic in as in the CVPIA SIT DSMs. There are a total of 307,650 hatchery adults initiated each of the first 3 years.
 
-### Calculating Perecnt Natural
+### Calculating Percent Natural
 Percent natural is calculated by taking the total number of natural adults returning and dividing by total number of adults in system (natural and hatchery). This is calculated each year for each tributary in the model. 
 
 ### Calculating PHOS
@@ -102,6 +102,11 @@ summarized_release <- hatchery_releases |>
 winter_hatchery_release = matrix(0, nrow = 31, ncol = 4, dimnames = list(winterRunDSM::watershed_labels, c("s", "m", "l", "xl")))
 # populate hatchery release as larger fish based on avg hatchery release data
 winter_hatchery_release[, 3] <- summarized_release$release_number
+
+# convert to list of 20 (one matrix per year) to allow hatchery releases to vary annually
+winter_hatchery_release <- rep(list(winter_hatchery_release), 20)
+names(winter_hatchery_release) <- c(1:20)
+
 usethis::use_data(winter_hatchery_release, overwrite = TRUE)
 knitr::kable(hatchery_releases)
 ```

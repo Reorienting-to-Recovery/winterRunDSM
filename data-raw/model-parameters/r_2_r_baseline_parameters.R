@@ -169,7 +169,6 @@ r_to_r_baseline_params <- list(
   
   # R2R specific metrics
   hatchery_release = winterRunDSM::winter_hatchery_release, #TODO update with renes hatchery numbers and document
-  hatchery_releases_at_chipps = matrix(0, nrow = 31, ncol = 4, dimnames = list(winterRunDSM::watershed_labels, winterRunDSM::size_class_labels)),
   fecundity_lookup = winterRunDSM::fecundity_by_age,
   
   # Flows for stray 

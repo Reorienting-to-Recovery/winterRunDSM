@@ -165,25 +165,39 @@ winter_run_model <- function(scenario = NULL,
     # Begin adult logic --------------------------------------------------------
     # In seed and calibrate just use adults
     # Do not need to apply harvest, or survival because starting with GrandTab values
+    
+    # the natural adult removal rate is 0 for years where we have no hatchery releases
+    years_with_no_hatchery_release <- which(rowSums(..params$hatchery_release[[year]]) == 0)
+    ..params$natural_adult_removal_rate[years_with_no_hatchery_release] <- 0
+    
     if (mode %in% c("seed", "calibrate")) {
       adult_index <- ifelse(mode == "seed", 1, year)
       annual_adults <- adults[, adult_index]
       annual_adults_hatch_removed <- if (stochastic) {
         rbinom(n = 31,
                size = adults_by_month,
-               prob = 1 - natural_adult_removal_rate)
+               prob = 1 - ..params$natural_adult_removal_rate)
       } else {
-        annual_adults * (1 - natural_adult_removal_rate)
+        annual_adults * (1 - ..params$natural_adult_removal_rate)
       }
       spawners = list(init_adults = round(annual_adults_hatch_removed),
-                      proportion_natural = 1 - winterRunDSM::params$proportion_hatchery)
+                      proportion_natural = 1 - ..params$proportion_hatchery)
+    }
+    if(mode == "simulate") {
+      annual_adults_hatch_removed <- if (stochastic) {
+        rbinom(n = 31,
+               size = adults_by_month,
+               prob = 1 - ..params$natural_adult_removal_rate)
+      } else {
+        adults[, year] * (1 - ..params$natural_adult_removal_rate)
+      }
     }
     
     if(mode == "simulate") {
       # TODO brought in harvest logic from springRunDSM - ok?
       # HARVEST ----------------------------------------------------------------
       # Incidental harvest percentage 
-      hatch_adults <- adults[, year] * seeds$proportion_hatchery 
+      hatch_adults <- annual_adults_hatch_removed * seeds$proportion_hatchery 
       adults_after_harvest <- hatch_adults * (1 - .1) # assume 10% hooking mortality 
       hatch_after_harvest_by_age <- round(unname(adults_after_harvest) * as.matrix(default_hatch_age_dist[2:5]))
       row.names(hatch_after_harvest_by_age) = winterRunDSM::watershed_labels
@@ -191,7 +205,7 @@ winter_run_model <- function(scenario = NULL,
       harvested_hatchery_adults <- hatch_adults - adults_after_harvest
       
       # Incidental harvest percentage 
-      nat_adults <- adults[, year] * (1 - seeds$proportion_hatchery)
+      nat_adults <- annual_adults_hatch_removed * (1 - seeds$proportion_hatchery)
       natural_adults_after_harvest <- nat_adults * (1 - .1) # assume 10% hooking mortality 
       natural_adults_by_age <- round(unname(natural_adults_after_harvest) * as.matrix(default_nat_age_dist[2:5]))
       harvested_natural_adults <- nat_adults - natural_adults_after_harvest
@@ -214,7 +228,7 @@ winter_run_model <- function(scenario = NULL,
       # STRAY --------------------------------------------------------------------
       adults_after_stray <- apply_straying(year, adults_after_harvest$natural_adults,
                                            adults_after_harvest$hatchery_adults,
-                                           total_releases = ..params$hatchery_release,
+                                           total_releases = ..params$hatchery_release[[year]],
                                            release_month = 1,
                                            flows_oct_nov = ..params$flows_oct_nov,
                                            flows_apr_may = ..params$flows_apr_may,
@@ -231,7 +245,7 @@ winter_run_model <- function(scenario = NULL,
                                          ..surv_adult_enroute_int = ..params$..surv_adult_enroute_int,
                                          .adult_en_route_migratory_temp = ..params$.adult_en_route_migratory_temp,
                                          .adult_en_route_bypass_overtopped = ..params$.adult_en_route_bypass_overtopped,
-                                         hatchery_release = ..params$hatchery_release,
+                                         hatchery_release = ..params$hatchery_release[[year]],
                                          stochastic = stochastic)
     }
     
@@ -241,7 +255,7 @@ winter_run_model <- function(scenario = NULL,
     # # For use in the r2r metrics ---------------------------------------------
     # TODO fix handling for PHOS on non spawn and 0 fish watersheds
     phos <- ifelse(is.na(1 - spawners$proportion_natural), 0, 1 - spawners$proportion_natural)
-    if (mode == "simulate" & year > 5 & (sum(..params$hatchery_release) + sum(..params$hatchery_releases_at_chipps)) == 0) {
+    if (mode == "simulate" & year > 5 & (sum(unlist(..params$hatchery_release[year - 5:year]))) == 0) {
       natural_proportion_with_renat <- rep(1, 31)
       names(natural_proportion_with_renat) <- winterRunDSM::watershed_labels
     } else if (year > 3){
@@ -323,7 +337,7 @@ winter_run_model <- function(scenario = NULL,
     natural_juveniles <- total_juves_pre_hatchery  * natural_proportion_with_renat
     total_juves_pre_hatchery <- rowSums(juveniles)
     # TODO add ability to vary release per year
-    juveniles <- juveniles + ..params$hatchery_release
+    juveniles <- juveniles + ..params$hatchery_release[[year]]
     
     # Create new prop natural including hatch releases that we can use to apply to adult returns
     proportion_natural_juves_in_tribs <- natural_juveniles / rowSums(juveniles)

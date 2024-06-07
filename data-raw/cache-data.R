@@ -189,7 +189,3 @@ natural_straying_destinations <- matrix(1/31, nrow = 31, ncol = 4)
 
 rmultinom(n = 1, size = matrix(1:4, ncol = 2), prob = matrix(1:4, ncol = 2))
 
-# Cache hatchery releases at Chipps
-hatchery_releases_at_chipps = matrix(0, nrow = 31, ncol = 4,
-                                     dimnames = list(fallRunDSM::watershed_labels, fallRunDSM::size_class_labels))
-usethis::use_data(hatchery_releases_at_chipps,overwrite = TRUE)
