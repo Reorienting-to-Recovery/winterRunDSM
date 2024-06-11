@@ -26,12 +26,14 @@ The existing SIT DSMs follow the following model logic for hatchery fish:
 
 The updated Recovery life cycle model adds additional hatchery dynamic logic into the model. 
 
-1) The first two years there are 307650 hatchery adults initiated into the model based on CWT data. In subsequent years hatchery adults are carried over from prior generations and not initated annually. 
-2) Percent natural is output from model in the `get_spawning_adults()` submodel\
-3) PHOS initiated as `1 - percent_natural` and adjusted to describe hatchery fish renaturing every 2 generations. Renaturing adjustment assumes that if PHOS is decreasing in two prior years than the population of hatchery for current year should be adjusted by the percent difference of PHOS in current year vs current year minus two. PHOS is recalculated using adjusted number of hatchery fish divided by total population. 
-4) Both natural adults and hatchery adults spawn. Distinct fecundity is applied to natural vs hatchery fish based on fish size. The model does not track fish size, only age, so ages are mapped to size using logic from Roni and Quinn 1995. 
-5) Hatchery releases are added into the model logic in tributaries and when applicable as juveniles at chipps island. Hatchery fish are added in within the large juvenile size class. 
-6) All surviving juveniles outmigrate and are carried over to the next year. Hatchery and natural adult returns are tracked separately and have different adult return ratios.
+1) The first two years there are 307650 hatchery adults initiated into the model based on CWT data. In subsequent years hatchery adults are carried over from prior generations and not initiated annually. 
+2) The adult removal rate for hatcheries is `0` for years where there are no hatchery releases.
+3) Proportion natural is calculated as `1 - proportion_hatchery`. `proportion_hatchery` is calculated from CWT data, grouped by tributary and summarized to find the mean percentage of hatchery fish for each tributary.
+4) PHOS initiated as `1 - proportion_natural` and adjusted to describe hatchery fish renaturing every 2 generations. Renaturing adjustment assumes that if PHOS is decreasing in two prior years than the population of hatchery for current year should be adjusted by the percent difference of PHOS in current year vs current year minus two. PHOS is recalculated using adjusted number of hatchery fish divided by total population. If there were no hatchery
+releases in the five previous years, `proportion_natural` is set to `1` (i.e. `PHOS = 0`).
+5) Both natural adults and hatchery adults spawn. Distinct fecundity is applied to natural vs hatchery fish based on fish size. The model does not track fish size, only age, so ages are mapped to size using logic from Roni and Quinn 1995. 
+6) Hatchery releases are added into the model logic in tributaries and when applicable as juveniles at chipps island. Hatchery fish are added in within the large juvenile size class. 
+7) All surviving juveniles outmigrate and are carried over to the next year. Hatchery and natural adult returns are tracked separately and have different adult return ratios.
 
 Detailed overviews of each update including the literature or data source are provided below.
 
@@ -40,11 +42,13 @@ Detailed overviews of each update including the literature or data source are pr
 The first 3 years of the model hatchery returns are initiated using CWT data and the same logic in as in the CVPIA SIT DSMs. There are a total of 307,650 hatchery adults initiated each of the first 3 years.
 
 ### Calculating Percent Natural
+
 Percent natural is calculated by taking the total number of natural adults returning and dividing by total number of adults in system (natural and hatchery). This is calculated each year for each tributary in the model. 
 
 ### Calculating PHOS
 
-Each year PHOS is initiated as 1 - percent_natural. PHOS is updated to account for renaturing every 2 generations if PHOS decreases in last two consecutive years. 
+Each year PHOS is initiated as 1 - percent_natural. PHOS is updated to account for renaturing every 2 generations if PHOS decreases in last two consecutive years. If there were no hatchery
+releases in the five previous years, PHOS is set to `0`.
 
 #### Renaturing
 

@@ -382,17 +382,22 @@ dynamic logic into the model.</p>
 <ol style="list-style-type: decimal">
 <li>The first two years there are 307650 hatchery adults initiated into
 the model based on CWT data. In subsequent years hatchery adults are
-carried over from prior generations and not initated annually.</li>
-<li>Percent natural is output from model in the
-<code>get_spawning_adults()</code> submodel<br />
-</li>
-<li>PHOS initiated as <code>1 - percent_natural</code> and adjusted to
-describe hatchery fish renaturing every 2 generations. Renaturing
+carried over from prior generations and not initiated annually.</li>
+<li>The adult removal rate for hatcheries is <code>0</code> for years
+where there are no hatchery releases.</li>
+<li>Proportion natural is calculated as
+<code>1 - proportion_hatchery</code>. <code>proportion_hatchery</code>
+is calculated from CWT data, grouped by tributary and summarized to find
+the mean percentage of hatchery fish for each tributary.</li>
+<li>PHOS initiated as <code>1 - proportion_natural</code> and adjusted
+to describe hatchery fish renaturing every 2 generations. Renaturing
 adjustment assumes that if PHOS is decreasing in two prior years than
 the population of hatchery for current year should be adjusted by the
 percent difference of PHOS in current year vs current year minus two.
 PHOS is recalculated using adjusted number of hatchery fish divided by
-total population.</li>
+total population. If there were no hatchery releases in the five
+previous years, <code>proportion_natural</code> is set to <code>1</code>
+(i.e. <code>PHOS = 0</code>).</li>
 <li>Both natural adults and hatchery adults spawn. Distinct fecundity is
 applied to natural vs hatchery fish based on fish size. The model does
 not track fish size, only age, so ages are mapped to size using logic
@@ -413,8 +418,8 @@ CWT data and the same logic in as in the CVPIA SIT DSMs. There are a
 total of 307,650 hatchery adults initiated each of the first 3
 years.</p>
 </div>
-<div id="calculating-perecnt-natural" class="section level3">
-<h3>Calculating Perecnt Natural</h3>
+<div id="calculating-percent-natural" class="section level3">
+<h3>Calculating Percent Natural</h3>
 <p>Percent natural is calculated by taking the total number of natural
 adults returning and dividing by total number of adults in system
 (natural and hatchery). This is calculated each year for each tributary
@@ -424,7 +429,8 @@ in the model.</p>
 <h3>Calculating PHOS</h3>
 <p>Each year PHOS is initiated as 1 - percent_natural. PHOS is updated
 to account for renaturing every 2 generations if PHOS decreases in last
-two consecutive years.</p>
+two consecutive years. If there were no hatchery releases in the five
+previous years, PHOS is set to <code>0</code>.</p>
 <div id="renaturing" class="section level4">
 <h4>Renaturing</h4>
 <p>Renaturing only occurs in the model after year 3 if PHOS decreases
