@@ -85,7 +85,7 @@ knitr::kable(fecundity_table)
 
 ### Juvenile Hatchery Releases
 
-Hatchery return data comes from the production tragets defined in the California [HSRG](California HSRG: https://swfsc-publications.fisheries.noaa.gov/publications/CR/2012/2012California.pdf)(Pages 65 - 95).
+Hatchery return data comes from the production targets defined in the California [HSRG](California HSRG: https://swfsc-publications.fisheries.noaa.gov/publications/CR/2012/2012California.pdf)(Pages 65 - 95).
 
 Baseline hatchery releases by Tributary are: 
 
@@ -103,13 +103,20 @@ summarized_release <- hatchery_releases |>
   right_join(watershed_attributes |> select(watershed, order)) |>
   arrange(order) |>
   mutate(release_number = ifelse(is.na(release_number), 0, release_number)) 
-winter_hatchery_release = matrix(0, nrow = 31, ncol = 4, dimnames = list(winterRunDSM::watershed_labels, c("s", "m", "l", "xl")))
+
+winter_hatchery_release = matrix(0, nrow = 31, ncol = 4, 
+                                 dimnames = list(winterRunDSM::watershed_labels,
+                                                 c("s", "m", "l", "xl")))
+
 # populate hatchery release as larger fish based on avg hatchery release data
 winter_hatchery_release[, 3] <- summarized_release$release_number
 
-# convert to list of 20 (one matrix per year) to allow hatchery releases to vary annually
-winter_hatchery_release <- rep(list(winter_hatchery_release), 20)
-names(winter_hatchery_release) <- c(1:20)
+# convert to 3d matrix (one 2D matrix for 20 years) to allow hatchery releases to vary annually
+winter_hatchery_release<- array(rep(winter_hatchery_release, 20), 
+                              c(31, 4, 20),
+                              dimnames = list(springRunDSM::watershed_labels,
+                                              c("s", "m", "l", "xl"),
+                                              1:20))
 
 usethis::use_data(winter_hatchery_release, overwrite = TRUE)
 knitr::kable(hatchery_releases)
