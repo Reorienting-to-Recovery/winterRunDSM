@@ -167,7 +167,7 @@ winter_run_model <- function(scenario = NULL,
     # Do not need to apply harvest, or survival because starting with GrandTab values
     
     # the natural adult removal rate is 0 for years where we have no hatchery releases
-    years_with_no_hatchery_release <- which(rowSums(..params$hatchery_release[[year]]) == 0)
+    years_with_no_hatchery_release <- which(rowSums(..params$hatchery_release[, , year]) == 0)
     ..params$natural_adult_removal_rate[years_with_no_hatchery_release] <- 0
     
     if (mode %in% c("seed", "calibrate")) {
@@ -228,7 +228,7 @@ winter_run_model <- function(scenario = NULL,
       # STRAY --------------------------------------------------------------------
       adults_after_stray <- apply_straying(year, adults_after_harvest$natural_adults,
                                            adults_after_harvest$hatchery_adults,
-                                           total_releases = ..params$hatchery_release[[year]],
+                                           total_releases = ..params$hatchery_release[, , year],
                                            release_month = 1,
                                            flows_oct_nov = ..params$flows_oct_nov,
                                            flows_apr_may = ..params$flows_apr_may,
@@ -245,7 +245,7 @@ winter_run_model <- function(scenario = NULL,
                                          ..surv_adult_enroute_int = ..params$..surv_adult_enroute_int,
                                          .adult_en_route_migratory_temp = ..params$.adult_en_route_migratory_temp,
                                          .adult_en_route_bypass_overtopped = ..params$.adult_en_route_bypass_overtopped,
-                                         hatchery_release = ..params$hatchery_release[[year]],
+                                         hatchery_release = ..params$hatchery_release[, , year],
                                          stochastic = stochastic)
     }
     
@@ -337,7 +337,7 @@ winter_run_model <- function(scenario = NULL,
     natural_juveniles <- total_juves_pre_hatchery  * natural_proportion_with_renat
     total_juves_pre_hatchery <- rowSums(juveniles)
     # TODO add ability to vary release per year
-    juveniles <- juveniles + ..params$hatchery_release[[year]]
+    juveniles <- juveniles + ..params$hatchery_release[, , year]
     
     # Create new prop natural including hatch releases that we can use to apply to adult returns
     proportion_natural_juves_in_tribs <- natural_juveniles / rowSums(juveniles)
