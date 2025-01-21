@@ -93,12 +93,14 @@ usethis::use_data(growth_rates_floodplain, overwrite = TRUE)
 bioenergetics_transitions <- read_rds("data-raw/growTPM.rds")
 usethis::use_data(bioenergetics_transitions, overwrite = TRUE)
 
-prey_density <- rep("med", 31) # NOTE this is to drive the new prey density dependent growth
+prey_density <- matrix("med", nrow = 31, ncol = 20) # NOTE this is to drive the new prey density dependent growth
+rownames(prey_density) <- winterRunDSM::watershed_labels
 usethis::use_data(prey_density, overwrite = TRUE)
 
 
 # should be moved to a data package?
-prey_density_delta <- c("med", "med")
+prey_density_delta <- matrix("med", nrow = 2, ncol = 20)
+rownames(prey_density_delta) <- c("North Delta", "South Delta")
 usethis::use_data(prey_density_delta, overwrite = TRUE)
 
 hatchery_release_proportion_bay <- 0
