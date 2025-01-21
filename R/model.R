@@ -28,6 +28,9 @@ winter_run_model <- function(scenario = NULL,
     if (is.null(scenario)) {
       # the do nothing scenario to force habitat degradation
       scenario <- DSMscenario::scenarios$NO_ACTION
+      ..params$survival_adjustment <- matrix(1, nrow = 31, ncol = 21,
+                                             dimnames = list(DSMscenario::watershed_labels,
+                                                             1980:2000))
     }
     
     habitats <- list(
@@ -61,10 +64,9 @@ winter_run_model <- function(scenario = NULL,
   }
   
   if (mode == "calibrate") {
-    scenario_data <- list(
-      survival_adjustment = matrix(1, nrow = 31, ncol = 21,
-                                   dimnames = list(DSMscenario::watershed_labels,
-                                                   1980:2000)))
+    ..params$survival_adjustment <- matrix(1, nrow = 31, ncol = 21,
+                                           dimnames = list(DSMscenario::watershed_labels,
+                                                           1980:2000))
   }
   simulation_length <- switch(mode,
                               "seed" = 6,
@@ -249,13 +251,13 @@ winter_run_model <- function(scenario = NULL,
                                          stochastic = stochastic)
     }
     
-    init_adults <- spawners$init_adults
+    init_adults <- round(spawners$init_adults)
     
     output$spawners[ , year] <- init_adults
     # # For use in the r2r metrics ---------------------------------------------
     # TODO fix handling for PHOS on non spawn and 0 fish watersheds
     phos <- ifelse(is.na(1 - spawners$proportion_natural), 0, 1 - spawners$proportion_natural)
-    if (mode == "simulate" & year > 5 & (sum(unlist(..params$hatchery_release[year - 5:year]))) == 0) {
+    if (mode == "simulate" & year > 5 & (sum(..params$hatchery_release[ , , abs((year-5)):year])) == 0) {
       natural_proportion_with_renat <- rep(1, 31)
       names(natural_proportion_with_renat) <- winterRunDSM::watershed_labels
     } else if (year > 3){
@@ -336,8 +338,9 @@ winter_run_model <- function(scenario = NULL,
     total_juves_pre_hatchery <- rowSums(juveniles)
     natural_juveniles <- total_juves_pre_hatchery  * natural_proportion_with_renat
     total_juves_pre_hatchery <- rowSums(juveniles)
-    # TODO add ability to vary release per year
-    juveniles <- juveniles + ..params$hatchery_release[, , year]
+    juveniles <- juveniles + sweep(..params$hatchery_release[, , year], 
+                                   MARGIN = 2, 
+                                   (1 - ..params$hatchery_release_proportion_bay), "*")
     
     # Create new prop natural including hatch releases that we can use to apply to adult returns
     proportion_natural_juves_in_tribs <- natural_juveniles / rowSums(juveniles)
@@ -372,14 +375,14 @@ winter_run_model <- function(scenario = NULL,
       if (month %in% 1:5) iter_year <- year + 1 else iter_year <- year
       
       growth_rates_ic <- get_growth_rates(growth_temps[,month, iter_year],
-                                          prey_density = ..params$prey_density)
+                                          prey_density = ..params$prey_density[, year])
       
       growth_rates_fp <- get_growth_rates(growth_temps[,month, iter_year],
-                                          prey_density = ..params$prey_density,
+                                          prey_density = ..params$prey_density[, year],
                                           floodplain = TRUE)
       
       growth_rates_delta <- get_growth_rates(..params$avg_temp_delta[month, iter_year,],
-                                             prey_density = ..params$prey_density_delta)
+                                             prey_density = ..params$prey_density_delta[, year])
       
       habitat <- get_habitat(iter_year, month,
                              inchannel_habitat_fry = ..params$inchannel_habitat_fry,
