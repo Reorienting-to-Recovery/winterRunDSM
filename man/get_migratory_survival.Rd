@@ -19,6 +19,7 @@ get_migratory_survival(
   CVP_exports,
   SWP_exports,
   upper_sacramento_flows,
+  san_joaquin_flows,
   delta_inflow,
   avg_temp_delta,
   avg_temp,

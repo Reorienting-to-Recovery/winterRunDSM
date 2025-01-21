@@ -3,12 +3,12 @@
 \docType{data}
 \name{natural_adult_removal_rate}
 \alias{natural_adult_removal_rate}
-\title{Natural Spawners Removal Rate}
+\title{Spawners Removal Rate}
 \format{
 1 dimensional array [31 watersheds]
 }
 \source{
-Various \href{https://s3-us-west-2.amazonaws.com/cvpia-reference-docs/AWP+Attachment+1.pdf}{CVPIA Science Integration Team: FY18 Decision Support Model activities and FY17 priorities Memorandum}
+Spawner removal rate was derived using coded wire tag analysis. Details and methodology are available \href{https://cvpia-osc.github.io/fallRunDSM/articles/hatchery-analysis.html}{here}.
 
 Compiled by: James T. Peterson \email{jt.peterson@oregonstate.edu}
 }
@@ -19,6 +19,6 @@ natural_adult_removal_rate
 Spawners removed for hatcheries
 }
 \details{
-Natural Spawners Removal Rate
+Spawners Removal Rate
 }
 \keyword{datasets}

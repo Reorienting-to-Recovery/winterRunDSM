@@ -30,7 +30,7 @@ apply_straying(
 
 \item{flows_apr_may}{Mean flows from April and May ..params$flows_apr_may,}
 
-\item{monthly_mean_pdo}{Mean pdo from fallRunDSM::monthly_mean_pdo,}
+\item{monthly_mean_pdo}{Mean pdo from winterRunDSM::monthly_mean_pdo,}
 }
 \description{
 Function to apply adult upstream straying

@@ -12,15 +12,17 @@ spawn_success(
   proportion_natural,
   hatchery_age_distribution,
   natural_age_distribution,
-  fecundity_lookup = winterRunDSM::params$fecundity_lookup,
+  fecundity_lookup = fallRunDSM::params$fecundity_lookup,
   adult_prespawn_survival,
+  adult_prespawn_survival_abv_dam,
+  abv_dam_spawn_proportion,
   egg_to_fry_survival,
   prob_scour,
   spawn_habitat,
-  sex_ratio = winterRunDSM::params$spawn_success_sex_ratio,
-  redd_size = winterRunDSM::params$spawn_success_redd_size,
-  fecundity = winterRunDSM::params$spawn_success_fecundity,
-  stochastic
+  stochastic,
+  sex_ratio = springRunDSM::params$spawn_success_sex_ratio,
+  redd_size = springRunDSM::params$spawn_success_redd_size,
+  fecundity = springRunDSM::params$spawn_success_fecundity
 )
 }
 \arguments{
@@ -34,13 +36,13 @@ spawn_success(
 
 \item{spawn_habitat}{The available spawning habitat in square meters}
 
+\item{stochastic}{\code{TRUE} \code{FALSE} value indicating if model is being run stochastically}
+
 \item{sex_ratio}{The female to male spawning ratio}
 
 \item{redd_size}{The size of redds including defensible space}
 
 \item{fecundity}{The number of eggs per female}
-
-\item{stochastic}{\code{TRUE} \code{FALSE} value indicating if model is being run stochastically}
 }
 \description{
 Calculates the annual reproductive success.
