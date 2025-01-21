@@ -118,6 +118,7 @@ r_to_r_baseline_params <- list(
   cc_gates_prop_days_closed = DSMflow::delta_cross_channel_closed$biop_itp_2018_2019["proportion", ],
   proportion_flow_bypass = DSMflow::proportion_flow_bypasses$biop_itp_2018_2019,
   gates_overtopped = DSMflow::gates_overtopped$biop_itp_2018_2019,
+  san_joaquin_flows = matrix(0, nrow = 12, ncol = 21, dimnames = list(month.abb, 1980:2000)),
   
   # DSMtemperature variables -----
   vernalis_temps = DSMtemperature::vernalis_temperature,

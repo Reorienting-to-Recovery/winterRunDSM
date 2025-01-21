@@ -393,7 +393,7 @@ winter_run_model <- function(scenario = NULL,
                              delta_habitat = ..params$delta_habitat)
       
       rearing_survival <- get_rearing_survival(iter_year, month,
-                                               survival_adjustment = scenario_data$survival_adjustment,
+                                               survival_adjustment = ..params$survival_adjustment,
                                                mode = mode,
                                                avg_temp = ..params$avg_temp,
                                                avg_temp_delta = ..params$avg_temp_delta,
@@ -450,6 +450,7 @@ winter_run_model <- function(scenario = NULL,
                                                    CVP_exports = ..params$CVP_exports,
                                                    SWP_exports = ..params$SWP_exports,
                                                    upper_sacramento_flows = ..params$upper_sacramento_flows,
+                                                   san_joaquin_flows = ..params$san_joaquin_flows,
                                                    delta_inflow = ..params$delta_inflow,
                                                    avg_temp_delta = ..params$avg_temp_delta,
                                                    avg_temp = ..params$avg_temp,
@@ -459,6 +460,10 @@ winter_run_model <- function(scenario = NULL,
                                                    .surv_juv_outmigration_san_joaquin_large = ..params$.surv_juv_outmigration_san_joaquin_large,
                                                    min_survival_rate = ..params$min_survival_rate,
                                                    stochastic = stochastic)
+      
+      if(any(..params$san_joaquin_flows > 0)) {
+        migratory_survival$san_joaquin <- migratory_survival$san_joaquin_flow_based
+      }
       
       migrants <- matrix(0, nrow = 31, ncol = 4, dimnames = list(winterRunDSM::watershed_labels, winterRunDSM::size_class_labels))
       
