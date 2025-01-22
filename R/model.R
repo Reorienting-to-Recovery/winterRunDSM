@@ -252,6 +252,7 @@ winter_run_model <- function(scenario = NULL,
     }
     
     init_adults <- round(spawners$init_adults)
+    init_adults[is.na(init_adults)] <- 0 # TODO keep this?
     
     output$spawners[ , year] <- init_adults
     # # For use in the r2r metrics ---------------------------------------------
@@ -278,6 +279,7 @@ winter_run_model <- function(scenario = NULL,
       natural_proportion_with_renat <-  spawners$proportion_natural
     }
     
+    #natural_proportion_with_renat[is.na(natural_proportion_with_renat)] <- 0 # TODO keep?
     output$proportion_natural_at_spawning[ , year] <- natural_proportion_with_renat
     output$phos[ , year] <- 1 - natural_proportion_with_renat
     # end R2R metric logic -----------------------------------------------------
@@ -339,11 +341,12 @@ winter_run_model <- function(scenario = NULL,
     natural_juveniles <- total_juves_pre_hatchery  * natural_proportion_with_renat
     total_juves_pre_hatchery <- rowSums(juveniles)
     juveniles <- juveniles + sweep(..params$hatchery_release[, , year], 
-                                   MARGIN = 2, 
+                                   MARGIN=2, 
                                    (1 - ..params$hatchery_release_proportion_bay), "*")
     
     # Create new prop natural including hatch releases that we can use to apply to adult returns
     proportion_natural_juves_in_tribs <- natural_juveniles / rowSums(juveniles)
+    proportion_natural_juves_in_tribs[is.nan(proportion_natural_juves_in_tribs)] <- 0 # TODO keep?
     output$proportion_natural_juves_in_tribs[ , year] <- proportion_natural_juves_in_tribs
     
     # # For use in the r2r metrics ---------------------------------------------
@@ -355,19 +358,7 @@ winter_run_model <- function(scenario = NULL,
     output$juveniles <- dplyr::bind_rows(output$juveniles, d)
     
     # end R2R metric -----------------------------------------------------------
-    
-    # Create new prop natural including hatch releases that we can use to apply to adult returns
-    proportion_natural_juves_in_tribs <- natural_juveniles / rowSums(juveniles)
-    output$proportion_natural_juves_in_tribs[ , year] <- proportion_natural_juves_in_tribs
-    
-    # # For use in the r2r metrics ---------------------------------------------
-    d <- data.frame(juveniles)
-    colnames(d) <- c("s", "m", "l", "vl")
-    d$watershed <- winterRunDSM::watershed_labels
-    d <- d |> tidyr::pivot_longer(names_to = "size", values_to = "juveniles", -watershed)
-    d$year <- year
-    output$juveniles <- dplyr::bind_rows(output$juveniles, d)
-    # end R2R metric -----------------------------------------------------------
+
     growth_temps <- ..params$avg_temp
     growth_temps[which(growth_temps > 28)] <- 28
     

@@ -138,6 +138,11 @@ names(watershed_to_hatchery_lookup) <- winterRunDSM::hatchery_to_watershed_looku
 
 usethis::use_data(watershed_to_hatchery_lookup, overwrite = TRUE)
 
+# proportion of in-river vs bay releases
+hatchery_release_proportion_bay <- 0
+# names(hatchery_release_proportion_bay1) <- fallRunDSM::watershed_labels
+usethis::use_data(hatchery_release_proportion_bay, overwrite = TRUE)
+
 # mean PDO
 raw_ocean_pdo <- read_csv("data-raw/stray-eda/PDO_monthly_Mantua.csv", skip = 1, col_names = c("year", "month", "PDO"))
 monthly_mean_pdo <- raw_ocean_pdo |>

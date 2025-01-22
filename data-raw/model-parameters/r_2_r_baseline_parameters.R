@@ -170,6 +170,7 @@ r_to_r_baseline_params <- list(
   
   # R2R specific metrics
   hatchery_release = winterRunDSM::winter_hatchery_release, #TODO update with renes hatchery numbers and document
+  hatchery_release_proportion_bay = winterRunDSM::hatchery_release_proportion_bay, # TODO confirm for winter run
   fecundity_lookup = winterRunDSM::fecundity_by_age,
   
   # Flows for stray 
