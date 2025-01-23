@@ -22,6 +22,7 @@ reference:
   desc: Functions that calculate survival
   contents:
   - surv_adult_enroute
+  - apply_enroute_survival
   - surv_adult_prespawn
   - surv_egg_to_fry
   - surv_juv_bypass
@@ -29,6 +30,7 @@ reference:
   - surv_juv_outmigration_delta
   - surv_juv_outmigration_sac
   - surv_juv_outmigration_san_joaquin
+  - surv_juv_outmigration_san_joaquin_flow_based
   - surv_juv_rear
   - spawn_success
   - ocean_entry_success
@@ -37,7 +39,14 @@ reference:
   desc: Functions that calculate growth and movement
   contents:
   - adult_stray
+  - apply_straying
+  - compute_adult_stray_rates
+  - harvest_adults
+  - juvenile_month_dynamic
   - pulse_movement
+  - snow_globe_movement
+  - temperature_movement
+  - time_movement
   - fill
   - route
   - route_and_rear_deltas
@@ -49,6 +58,7 @@ reference:
   - rear
   - migrate
   - ocean_transition_month
+  - get_growth_rates
 
 - title: Datasets
   desc: Data used by the lifecycle model
@@ -71,10 +81,10 @@ reference:
   - get_habitat
   - get_rearing_survival
   - get_migratory_survival
-  - get_spawning_adults
   - territory_by_size
   - gamma_MOM
   - days_in_month
+  - pretty_num
 
 navbar:
   structure:

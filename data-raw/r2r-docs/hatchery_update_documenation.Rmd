@@ -1,7 +1,7 @@
 ---
 title: "Reorienting to Recovery Hatchery Modifications to the DSMs"
 author: "Erin Cain"
-date: "9/29/2021"
+date: "1/22/2025"
 output: html_document    
 ---
 
@@ -19,7 +19,7 @@ library(winterRunDSM)
 The existing SIT DSMs follow the following model logic for hatchery fish:
 
 1)  Each year, if model is run deterministicly, there are 307650 hatchery adults initiated into the model based on (CWT data?). Hatchery adults are split between tribs based on values from `winterRunDSM::hatchery_allocation`
-2)  Percent natural is output from model in the `get_spawning_adults()` submodel
+2)  Percent natural is output from model in the `apply_enroute_survival()` submodel
 3)  Both natural adults and hatchery adults spawn, all surviving juveniles outmigrate and are carried over to the next year but origin is not tracked.
 
 ## Updated Approach

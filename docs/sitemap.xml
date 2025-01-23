@@ -1,171 +1,73 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/404.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/articles/calibration-2021.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/articles/model-faq.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/articles/sensitivity-analysis.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/articles/temperature-model.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/index.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/adult_harvest_rate.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/adult_seeds.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/adult_stray.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/cross_channel_stray_rate.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/days_in_month.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/diversity_group.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/fill.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/gamma_MOM.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/get_habitat.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/get_migratory_survival.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/get_rearing_survival.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/get_spawning_adults.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/growth.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/growth_floodplain.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/growth_rates.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/hatchery_allocation.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/mass_by_size_class.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/migrate.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/month_return_proportions.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/natural_adult_removal_rate.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/ocean_entry_success.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/ocean_transition_month.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/params.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/pretty_num.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/proportion_hatchery.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/pulse_movement.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/rear.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/route.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/route_and_rear_deltas.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/route_bypass.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/route_regional.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/route_to_south_delta.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/spawn_success.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/stray_rate.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_adult_enroute.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_adult_prespawn.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_egg_to_fry.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_juv_bypass.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_juv_delta.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_juv_outmigration_delta.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_juv_outmigration_sac.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_juv_outmigration_san_joaquin.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_juv_rear.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/territory_by_size.html</loc>
-  </url>
-  <url>
-    <loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/winter_run_model.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/404.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/LICENSE.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/articles/calibration-2021.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/articles/index.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/articles/model-faq.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/articles/sensitivity-analysis.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/articles/temperature-model.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/authors.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/index.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/news/index.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/adult_harvest_rate.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/adult_seeds.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/adult_stray.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/apply_enroute_survival.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/apply_straying.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/compute_adult_stray_rates.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/cross_channel_stray_rate.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/days_in_month.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/diversity_group.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/fill.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/gamma_MOM.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/get_growth_rates.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/get_habitat.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/get_migratory_survival.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/get_rearing_survival.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/get_spawning_adults.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/growth.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/growth_floodplain.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/growth_rates.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/harvest_adults.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/hatchery_allocation.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/index.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/juvenile_month_dynamic.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/mass_by_size_class.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/migrate.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/month_return_proportions.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/movement.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/natural_adult_removal_rate.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/normalize_with_context.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/normalize_with_params.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/ocean_entry_success.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/ocean_transition_month.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/params.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/prepare_stray_model_data.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/pretty_num.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/proportion_hatchery.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/pulse_movement.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/rear.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/route.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/route_and_rear_deltas.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/route_bypass.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/route_regional.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/route_to_south_delta.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/spawn_success.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/stray_rate.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/stray_rates_to_matrix.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_adult_enroute.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_adult_prespawn.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_egg_to_fry.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_juv_bypass.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_juv_delta.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_juv_outmigration_delta.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_juv_outmigration_sac.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_juv_outmigration_san_joaquin.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_juv_outmigration_san_joaquin_flow_based.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/surv_juv_rear.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/temperature_movement.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/territory_by_size.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/time_movement.html</loc></url>
+<url><loc>https://CVPIA-OSC.github.io/winterRunDSM/reference/winter_run_model.html</loc></url>
 </urlset>
+
