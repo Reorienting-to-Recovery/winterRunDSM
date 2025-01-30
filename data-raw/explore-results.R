@@ -1,5 +1,7 @@
 library(winterRunDSM)
 library(tidyverse)
+library(plotly)
+
 r2r_seeds <- winterRunDSM::winter_run_model(scenario = NULL, mode = "seed",
                                             seeds = NULL, ..params = winterRunDSM::r_to_r_baseline_params)
 
@@ -24,4 +26,4 @@ spawn <- dplyr::as_tibble(r2r_model_results$spawners) |>
   scale_x_continuous(breaks = 1:20) +
   theme(text = element_text(size = 20))
 
-spawn
+ggplotly(spawn)
