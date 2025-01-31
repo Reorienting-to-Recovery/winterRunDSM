@@ -461,11 +461,11 @@ surv_juv_outmigration_san_joaquin <- function(..surv_juv_outmigration_sj_int = w
 #' @title Juvenile Mainstem San Joaquin Outmigration Survival
 #' @description Calculates the Mainstem San Joaquin juvenile out migration survival
 #' @param flow_cms Variable representing upper San Joaquin River flow in cubic meters per second
-#' @source IP-117068
+#' @source \link[DSMflow FF documentation]{https://reorienting-to-recovery.github.io/DSMflow/articles/EFF_SJ.html}
 #' @export
 surv_juv_outmigration_san_joaquin_flow_based <- function(flow_cms){
   
-  result <- rep((flow_cms <= 122) * 0.03 + (flow_cms > 122 & flow_cms <= 303) * 0.189 + (flow_cms > 303) * 0.508, 4)
+  result <- rep((flow_cms <= 26) * 0.03 + (flow_cms > 26 & flow_cms <= 66) * 0.189 + (flow_cms > 66) * 0.508, 4)
   setNames(result, springRunDSM::size_class_labels)
 }
 
