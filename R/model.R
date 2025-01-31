@@ -27,42 +27,41 @@ winter_run_model <- function(scenario = NULL,
   if (mode == "simulate") {
     if (is.null(scenario)) {
       # the do nothing scenario to force habitat degradation
-      scenario <- DSMscenario::scenarios$NO_ACTION
+      ..params$survival_adjustment <- matrix(1, nrow = 31, ncol = 21,
+                                             dimnames = list(DSMscenario::watershed_labels,
+                                                             1980:2000))
+      scenario_data <- ..params
+    } else {
+      if(is.data.frame(scenario)) {
+        # if you are passing a custom scenario
+        scenario_data <- R2Rscenario::load_scenario(scenario,
+                                                    params = ..params,
+                                                    species = R2Rscenario::species$WINTER_RUN)
+      } else {
+        
+        scenario_group <- case_when(scenario %in% c("elephant", "platypus", "tortoise", "elephant_plus") ~ "balanced_scenarios",
+                                    scenario == "baseline" ~ "baseline_scenarios",
+                                    TRUE ~ "blended_scenarios")
+        
+        # Create new inputs consistent with R2Rscenario package
+        scenario_path <- paste0(paste0("R2Rscenario::scenarios$", scenario_group, "$", scenario))
+        scenario_object <- eval(parse(text = scenario_path))
+        scenario_data <- R2Rscenario::load_scenario(eval(parse(text = scenario_path)),
+                                                    params = ..params,
+                                                    species = R2Rscenario::species$WINTER_RUN)
+      }
+      
+      # if(is.null(scenario_object)) {
+      #   stop("The scenario you provided is not in the available options. Please see ??R2Rscenario::scenarios for a list of available scenarios to run.")
+      # }
+      
+      ..params <- scenario_data
       ..params$survival_adjustment <- matrix(1, nrow = 31, ncol = 21,
                                              dimnames = list(DSMscenario::watershed_labels,
                                                              1980:2000))
     }
-    
-    habitats <- list(
-      spawning_habitat = ..params$spawning_habitat,
-      inchannel_habitat_fry = ..params$inchannel_habitat_fry,
-      inchannel_habitat_juvenile = ..params$inchannel_habitat_juvenile,
-      floodplain_habitat = ..params$floodplain_habitat,
-      weeks_flooded = ..params$weeks_flooded
-    )
-    
-    # Apply spawn decay multiplier
-    scenario_data <- DSMscenario::load_scenario(scenario,
-                                                habitat_inputs = habitats,
-                                                species = DSMscenario::species$WINTER_RUN,
-                                                spawn_decay_rate = ..params$spawn_decay_rate,
-                                                rear_decay_rate = ..params$rear_decay_rate,
-                                                spawn_decay_multiplier = ..params$spawn_decay_multiplier,
-                                                stochastic = stochastic)
-    
-    ..params$spawning_habitat <- scenario_data$spawning_habitat
-    ..params$inchannel_habitat_fry <- scenario_data$inchannel_habitat_fry
-    ..params$inchannel_habitat_juvenile <- scenario_data$inchannel_habitat_juvenile
-    ..params$floodplain_habitat <- scenario_data$floodplain_habitat
-    ..params$weeks_flooded <- scenario_data$weeks_flooded
-    
-    ..params$spawning_habitat <- scenario_data$spawning_habitat
-    ..params$inchannel_habitat_fry <- scenario_data$inchannel_habitat_fry
-    ..params$inchannel_habitat_juvenile <- scenario_data$inchannel_habitat_juvenile
-    ..params$floodplain_habitat <- scenario_data$floodplain_habitat
-    ..params$weeks_flooded <- scenario_data$weeks_flooded
   }
-  
+
   if (mode == "calibrate") {
     ..params$survival_adjustment <- matrix(1, nrow = 31, ncol = 21,
                                            dimnames = list(DSMscenario::watershed_labels,
@@ -684,7 +683,7 @@ winter_run_model <- function(scenario = NULL,
       
       d <- data.frame(juveniles_at_chipps)
       colnames(d) <- c("s", "m", "l", "vl")
-      d$watershed <- fallRunDSM::watershed_labels
+      d$watershed <- winterRunDSM::watershed_labels
       d <- d |> tidyr::pivot_longer(names_to = "size",
                                     values_to = "juveniles_at_chipps", -watershed)
       d$year <- year

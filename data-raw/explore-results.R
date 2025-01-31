@@ -1,11 +1,15 @@
 library(winterRunDSM)
 library(tidyverse)
 library(plotly)
+library(R2Rscenario)
 
 r2r_seeds <- winterRunDSM::winter_run_model(scenario = NULL, mode = "seed",
-                                            seeds = NULL, ..params = winterRunDSM::r_to_r_baseline_params)
+                                            seeds = NULL, 
+                                            ..params = winterRunDSM::r_to_r_baseline_params)
 
-r2r_model_results <- winterRunDSM::winter_run_model(mode = "simulate", ..params = winterRunDSM::r_to_r_baseline_params,
+r2r_model_results <- winterRunDSM::winter_run_model(mode = "simulate", 
+                                                    #scenario = "kitchen_sink",
+                                                    ..params = winterRunDSM::r_to_r_baseline_params,
                                                     seeds = r2r_seeds)
 r2r_model_results$spawners
 r2r_model_results$phos
