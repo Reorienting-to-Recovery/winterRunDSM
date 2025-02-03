@@ -49,7 +49,7 @@ readr::write_rds(res, paste0("calibration/res-", Sys.Date(), ".rds"))
 keep <- c(1, 3)
 r1_solution <- res@solution[1, ]
 
-r1_params <- update_params(x = r1_solution, winterRunDSM::params)
+r1_params <- update_params(x = r1_solution, winterRunDSM::r_to_r_baseline_params)
 r1_params <- DSMCalibrationData::set_synth_years(r1_params)
 r1_sim <- winter_run_model(seeds = DSMCalibrationData::grandtab_imputed$winter, mode = "calibrate",
                            ..params = r1_params,
