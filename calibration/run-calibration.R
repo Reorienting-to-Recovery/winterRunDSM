@@ -44,6 +44,7 @@ res <- ga(type = "real-valued",
 
 readr::write_rds(res, paste0("calibration/res-", Sys.Date(), ".rds"))
 
+res <- readr::read_rds(paste0("calibration/res-", Sys.Date(), ".rds"))
 
 # Evaluate Results ------------------------------------
 keep <- c(1, 3)

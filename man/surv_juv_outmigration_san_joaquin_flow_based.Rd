@@ -4,7 +4,7 @@
 \alias{surv_juv_outmigration_san_joaquin_flow_based}
 \title{Juvenile Mainstem San Joaquin Outmigration Survival}
 \source{
-IP-117068
+\link[DSMflow FF documentation]{https://reorienting-to-recovery.github.io/DSMflow/articles/EFF_SJ.html}
 }
 \usage{
 surv_juv_outmigration_san_joaquin_flow_based(flow_cms)
