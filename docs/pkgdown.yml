@@ -1,4 +1,4 @@
-pandoc: '3.2'
+pandoc: 3.6.3
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
@@ -6,7 +6,7 @@ articles:
   model-faq: model-faq.html
   sensitivity-analysis: sensitivity-analysis.html
   temperature-model: temperature-model.html
-last_built: 2025-01-23T00:22Z
+last_built: 2026-02-12T23:01Z
 urls:
   reference: https://CVPIA-OSC.github.io/winterRunDSM/reference
   article: https://CVPIA-OSC.github.io/winterRunDSM/articles

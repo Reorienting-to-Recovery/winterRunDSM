@@ -92,6 +92,17 @@ and the <code>fill_regional</code> function is used to route fish on the mainste
 <span>  floodplain_habitat <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  territory_size <span class="op">=</span> <span class="fu">winterRunDSM</span><span class="fu">::</span><span class="va"><a href="params.html">params</a></span><span class="op">$</span><span class="va">territory_size</span>,</span>
 <span>  up_to_size_class <span class="op">=</span> <span class="fl">3</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">fill_natal_dens_depend</span><span class="op">(</span></span>
+<span>  <span class="va">juveniles</span>,</span>
+<span>  <span class="va">inchannel_habitat</span>,</span>
+<span>  <span class="va">floodplain_habitat</span>,</span>
+<span>  up_to_size_class <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  ..floodplain_capacity <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  ..habitat_capacity <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  territory_size <span class="op">=</span> <span class="va">territory_size</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 

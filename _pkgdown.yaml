@@ -41,13 +41,13 @@ reference:
   - adult_stray
   - apply_straying
   - compute_adult_stray_rates
-  - harvest_adults
   - juvenile_month_dynamic
   - pulse_movement
   - snow_globe_movement
   - temperature_movement
   - time_movement
   - fill
+  - fill_regional_dens_depend
   - route
   - route_and_rear_deltas
   - route_bypass
