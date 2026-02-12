@@ -11,7 +11,7 @@ update_params <- function(x, params) {
   params$..surv_juv_delta_total_diverted = x[9]
   params$..surv_juv_outmigration_sj_int = x[10]
   params$..ocean_entry_success_int = rep(x[11], 31)
-  params$mean_egg_temp_effect = x[12]
+  params$..surv_egg_to_fry_mean_egg_temp_effect = x[12]
 
   return(params)
 

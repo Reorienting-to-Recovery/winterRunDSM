@@ -13,7 +13,7 @@ r2r_param_mapping <- tibble("R2R_index" = 1:12) |>
                     "..surv_juv_delta_contact_points",
                     "..surv_juv_delta_total_diverted",
                     "..surv_juv_outmigration_sj_int",
-                    "mean_egg_temp_effect",
+                    "..surv_egg_to_fry_mean_egg_temp_effect",
                     "..ocean_entry_success_int"))
 
 LTO_param_mapping <- tibble("LTO_index" = 1:16,
